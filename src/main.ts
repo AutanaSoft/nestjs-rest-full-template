@@ -1,8 +1,12 @@
+import { AppConfig } from '@config/app.config';
+import { CorsConfig } from '@config/cors.config';
+import helmet from '@fastify/helmet';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { appConfigFactory } from './config/app.config';
 
 /**
  * Inicializa la aplicación NestJS.
@@ -22,8 +26,38 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   app.useLogger(logger);
 
-  // Obtener las configuraciones
-  const _appConfig = appConfigFactory();
+  // Obtener servicio de configuración
+  const configService = app.get(ConfigService);
+  const appConfig = configService.get<AppConfig>('appConfig');
+  const corsConfig = configService.get<CorsConfig>('corsConfig');
+
+  if (!appConfig) {
+    throw new Error('App config not found');
+  }
+
+  // Configurar prefijo global
+  if (appConfig.appPrefixEnabled) {
+    app.setGlobalPrefix(appConfig.appPrefix);
+  }
+
+  // Configurar seguridad (Helmet)
+  await app.register(helmet);
+
+  // Configurar CORS
+  if (corsConfig) {
+    app.enableCors(corsConfig);
+  }
+
+  // Configurar Swagger
+  if (appConfig.swagger.enabled) {
+    const config = new DocumentBuilder()
+      .setTitle(appConfig.name)
+      .setDescription(appConfig.description)
+      .setVersion(appConfig.version)
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup(appConfig.swagger.path, app, document);
+  }
 
   // Configurar validación global
   app.useGlobalPipes(
@@ -44,7 +78,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(_appConfig.server.port, _appConfig.server.host);
+  await app.listen(appConfig.server.port, appConfig.server.host);
   logger.log(`Server is running on port ${await app.getUrl()}`);
 }
 

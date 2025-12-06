@@ -1,5 +1,6 @@
 import type { LogLevel } from '@config/app.config';
 import { AppConfig } from '@config/app.config';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
@@ -13,6 +14,7 @@ export class AppStatusDto {
   /**
    * Nombre de la aplicación.
    */
+  @ApiProperty({ description: 'Nombre de la aplicación' })
   @IsString()
   @Expose()
   name: string;
@@ -20,6 +22,7 @@ export class AppStatusDto {
   /**
    * Descripción breve del propósito de la aplicación.
    */
+  @ApiProperty({ description: 'Descripción breve del propósito de la aplicación' })
   @IsString()
   @Expose()
   description: string;
@@ -27,6 +30,7 @@ export class AppStatusDto {
   /**
    * Versión actual de la aplicación (SemVer).
    */
+  @ApiProperty({ description: 'Versión actual de la aplicación (SemVer)' })
   @IsString()
   @Expose()
   version: string;
@@ -34,6 +38,7 @@ export class AppStatusDto {
   /**
    * Entorno en el que se está ejecutando la aplicación (ej. development, production).
    */
+  @ApiProperty({ description: 'Entorno de ejecución' })
   @IsString()
   @Expose()
   mode: string;
@@ -41,6 +46,7 @@ export class AppStatusDto {
   /**
    * Nivel de detalle configurado para el sistema de logging.
    */
+  @ApiProperty({ description: 'Nivel de log configurado' })
   @IsString()
   @Expose()
   logLevel: LogLevel;

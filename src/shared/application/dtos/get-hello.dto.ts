@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
@@ -6,6 +7,10 @@ import { IsString } from 'class-validator';
  * Utilizado para exponer información básica como nombre, versión y modo de ejecución.
  */
 export class GetHelloDto {
+  /**
+   * Mensaje de saludo.
+   */
+  @ApiProperty({ description: 'Mensaje de saludo', example: 'Hello World!' })
   @IsString()
   @Expose()
   message: string;

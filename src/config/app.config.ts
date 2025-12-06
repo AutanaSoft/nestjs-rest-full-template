@@ -1,12 +1,9 @@
 import { registerAs } from '@nestjs/config';
 
-/**
- * Niveles de log soportados por la aplicación.
- */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 /**
- * Interfaz que define la estructura de configuración de la aplicación.
+ * Interface that defines the application configuration.
  */
 export interface AppConfig {
   name: string;
@@ -14,16 +11,22 @@ export interface AppConfig {
   version: string;
   mode: string;
   logLevel: LogLevel;
+  appPrefixEnabled: boolean;
+  appPrefix: string;
   server: {
     host: string;
     port: number;
   };
+  swagger: {
+    enabled: boolean;
+    path: string;
+  };
 }
 
 /**
- * Fábrica que genera la configuración de la aplicación a partir de variables de entorno.
+ * Factory function that creates an application configuration object.
  *
- * @returns Objeto de configuración de la aplicación.
+ * @returns An application configuration object.
  */
 export const appConfigFactory = (): AppConfig => ({
   name: process.env.APP_NAME ?? 'NestJS REST Full Template',
@@ -31,13 +34,19 @@ export const appConfigFactory = (): AppConfig => ({
   version: process.env.APP_VERSION ?? '1.0.0',
   mode: process.env.APP_ENV ?? 'development',
   logLevel: (process.env.APP_LOG_LEVEL as LogLevel) ?? 'info',
+  appPrefixEnabled: process.env.APP_PREFIX_ENABLED === 'true',
+  appPrefix: process.env.API_PREFIX ?? 'v1',
   server: {
     host: process.env.SERVER_HOST ?? '0.0.0.0',
-    port: Number(process.env.SERVER_PORT) || 3000, // Keep || for port to handle NaN if env is empty string, though ?? is safer if we trust Number() behavior unrelated to this specific lint rule which usually prefers ??
+    port: Number(process.env.SERVER_PORT) || 3000,
+  },
+  swagger: {
+    enabled: process.env.APP_SWAGGER_ENABLED === 'true',
+    path: process.env.APP_SWAGGER_PATH ?? 'docs',
   },
 });
 
 /**
- * Registro de la configuración de la aplicación en el contenedor de NestJS.
+ * Registers the application configuration in the NestJS container.
  */
 export default registerAs<AppConfig>('appConfig', (): AppConfig => appConfigFactory());
