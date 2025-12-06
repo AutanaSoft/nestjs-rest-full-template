@@ -1,5 +1,6 @@
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { appConfigFactory } from './config/app.config';
 
@@ -13,7 +14,9 @@ import { appConfigFactory } from './config/app.config';
  * @returns Promesa que se resuelve cuando la aplicación se ha iniciado.
  */
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
+    bufferLogs: true,
+  });
 
   // Configurar logger
   const logger = new Logger('Bootstrap');
@@ -21,6 +24,25 @@ async function bootstrap() {
 
   // Obtener las configuraciones
   const _appConfig = appConfigFactory();
+
+  // Configurar validación global
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  // Configurar interceptor de serialización global
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), {
+      excludeExtraneousValues: true,
+    }),
+  );
 
   await app.listen(_appConfig.server.port, _appConfig.server.host);
   logger.log(`Server is running on port ${await app.getUrl()}`);

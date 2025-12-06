@@ -12,7 +12,7 @@ export interface AppConfig {
   name: string;
   description: string;
   version: string;
-  environment: string;
+  mode: string;
   logLevel: LogLevel;
   server: {
     host: string;
@@ -29,7 +29,7 @@ export const appConfigFactory = (): AppConfig => ({
   name: process.env.APP_NAME ?? 'NestJS REST Full Template',
   description: process.env.APP_DESCRIPTION ?? 'NestJS REST Full Template',
   version: process.env.APP_VERSION ?? '1.0.0',
-  environment: process.env.APP_ENV ?? 'development',
+  mode: process.env.APP_ENV ?? 'development',
   logLevel: (process.env.APP_LOG_LEVEL as LogLevel) ?? 'info',
   server: {
     host: process.env.SERVER_HOST ?? '0.0.0.0',
