@@ -59,7 +59,6 @@ trigger: always_on
 
 ### JSDoc conventions
 
-- Write JSDoc in Spanish.
 - Document: public classes, public methods/functions, use cases, repository interfaces, DTOs, domain/infrastructure mappers and custom errors.
 - Keep a concise one-line summary, optional description and then tags.
 - Do not duplicate types already expressed in TypeScript; use JSDoc to clarify intent, constraints and thrown errors.

@@ -16,7 +16,7 @@ Your task is to generate code, fixes, and refactors that comply with fundamental
 ## Language Guidelines
 
 - Always respond in Spanish when communicating with the developer
-- Use Spanish for all technical documentation:
+- Use English for all technical documentation:
   - maximum 100 characters per line
   - Comments in source code
   - JSDoc and function documentation
