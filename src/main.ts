@@ -1,11 +1,11 @@
-import { AppConfig } from '@config/app.config';
-import { CorsConfig } from '@config/cors.config';
+import { appConfigFactory } from '@config/app.config';
+import { corsConfigFactory } from '@config/cors.config';
 import helmet from '@fastify/helmet';
-import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
 /**
@@ -18,45 +18,45 @@ import { AppModule } from './app.module';
  * @returns Promesa que se resuelve cuando la aplicación se ha iniciado.
  */
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
+  // Obtener servicio de configuración
+  const _appConfig = appConfigFactory();
+  const _corsConfig = corsConfigFactory();
+  const fastifyAdapter = new FastifyAdapter();
+
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter, {
     bufferLogs: true,
   });
 
   // Configurar logger
-  const logger = new Logger('Bootstrap');
+  const logger = app.get(Logger);
   app.useLogger(logger);
 
-  // Obtener servicio de configuración
-  const configService = app.get(ConfigService);
-  const appConfig = configService.get<AppConfig>('appConfig');
-  const corsConfig = configService.get<CorsConfig>('corsConfig');
-
-  if (!appConfig) {
+  if (!_appConfig) {
     throw new Error('App config not found');
   }
 
   // Configurar prefijo global
-  if (appConfig.appPrefixEnabled) {
-    app.setGlobalPrefix(appConfig.appPrefix);
+  if (_appConfig.appPrefixEnabled) {
+    app.setGlobalPrefix(_appConfig.appPrefix);
   }
 
   // Configurar seguridad (Helmet)
   await app.register(helmet);
 
   // Configurar CORS
-  if (corsConfig) {
-    app.enableCors(corsConfig);
+  if (_corsConfig) {
+    app.enableCors(_corsConfig);
   }
 
   // Configurar Swagger
-  if (appConfig.swagger.enabled) {
+  if (_appConfig.swagger.enabled) {
     const config = new DocumentBuilder()
-      .setTitle(appConfig.name)
-      .setDescription(appConfig.description)
-      .setVersion(appConfig.version)
+      .setTitle(_appConfig.name)
+      .setDescription(_appConfig.description)
+      .setVersion(_appConfig.version)
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup(appConfig.swagger.path, app, document);
+    SwaggerModule.setup(_appConfig.swagger.path, app, document);
   }
 
   // Configurar validación global
@@ -78,7 +78,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(appConfig.server.port, appConfig.server.host);
+  await app.listen(_appConfig.server.port, _appConfig.server.host);
   logger.log(`Server is running on port ${await app.getUrl()}`);
 }
 

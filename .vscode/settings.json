@@ -1,3 +1,16 @@
 {
-  "cSpell.words": ["dtos", "inicialización", "nestjs", "registrándolo"]
+  "cSpell.words": [
+    "datasource",
+    "dbgenerated",
+    "dtos",
+    "inicialización",
+    "nestjs",
+    "openssl",
+    "postgres",
+    "postgresql",
+    "registrándolo",
+    "rhel",
+    "Timestamptz",
+    "Uuid"
+  ]
 }
