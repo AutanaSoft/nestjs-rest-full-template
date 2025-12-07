@@ -4,9 +4,10 @@ import { IncomingMessage } from 'node:http';
 import { join } from 'node:path';
 
 /**
- * Describe la configuración necesaria para inicializar el registro HTTP basado en pino.
+ * Describes the configuration required to initialize pino-based HTTP logging.
+ *
  * @remarks
- * Los valores se derivan de variables de entorno prefijadas con `LOG_`.
+ * Values are derived from environment variables prefixed with `LOG_`.
  * @public
  */
 export interface LoggerConfig {
@@ -19,9 +20,10 @@ export interface LoggerConfig {
 }
 
 /**
- * Conjunto de paths redactados automáticamente para evitar exponer datos sensibles.
+ * Set of automatically redacted paths to avoid exposing sensitive data.
+ *
  * @remarks
- * Se aplica sobre las propiedades de las solicitudes y respuestas capturadas por pino.
+ * Applied to request and response properties captured by pino.
  */
 const SENSITIVE_KEYS: readonly string[] = [
   '*.password',
@@ -38,6 +40,11 @@ const SENSITIVE_KEYS: readonly string[] = [
   '*.*.*.*.cookies',
 ];
 
+/**
+ * Factory function to create the logger configuration.
+ *
+ * @returns The logger configuration object.
+ */
 export const loggerConfigFactory = (): LoggerConfig => ({
   isProduction: process.env.NODE_ENV === 'production',
   logLevel: (process.env.LOG_LEVEL as LoggerConfig['logLevel']) ?? 'info',
@@ -48,15 +55,17 @@ export const loggerConfigFactory = (): LoggerConfig => ({
 });
 
 /**
- * Registra la configuración principal del logger bajo el espacio `loggerConfig`.
- * @returns Configuración tipada construida a partir de las variables de entorno.
+ * Registers the main logger configuration under the `loggerConfig` namespace.
+ *
+ * @returns Typed configuration built from environment variables.
  */
 export default registerAs('loggerConfig', (): LoggerConfig => loggerConfigFactory());
 
 /**
- * Traduce la configuración tipada en opciones para `nestjs-pino`.
- * @param config Valores de configuración del logger.
- * @returns Parámetros compatibles con el módulo de logging HTTP.
+ * Translates the typed configuration into options for `nestjs-pino`.
+ *
+ * @param config - Logger configuration values.
+ * @returns Parameters compatible with the HTTP logging module.
  */
 export const createLoggerModuleOptions = (config: LoggerConfig): Params => ({
   pinoHttp: {

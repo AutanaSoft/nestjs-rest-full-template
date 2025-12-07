@@ -9,16 +9,16 @@ import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
 /**
- * Inicializa la aplicación NestJS.
+ * Initializes the NestJS application.
  *
- * Configura el logger global, carga la configuración de la aplicación
- * e inicia el servidor HTTP escuchando en el host y puerto definidos
- * en la configuración.
+ * Configures the global logger, loads the application configuration,
+ * and starts the HTTP server listening on the host and port defined
+ * in the configuration.
  *
- * @returns Promesa que se resuelve cuando la aplicación se ha iniciado.
+ * @returns Promise that resolves when the application has started.
  */
 async function bootstrap() {
-  // Obtener servicio de configuración
+  // Get configuration service
   const _appConfig = appConfigFactory();
   const _corsConfig = corsConfigFactory();
   const fastifyAdapter = new FastifyAdapter();
@@ -27,7 +27,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  // Configurar logger
+  // Configure logger
   const logger = app.get(Logger);
   app.useLogger(logger);
 
@@ -35,20 +35,20 @@ async function bootstrap() {
     throw new Error('App config not found');
   }
 
-  // Configurar prefijo global
+  // Configure global prefix
   if (_appConfig.appPrefixEnabled) {
     app.setGlobalPrefix(_appConfig.appPrefix);
   }
 
-  // Configurar seguridad (Helmet)
+  // Configure security (Helmet)
   await app.register(helmet);
 
-  // Configurar CORS
+  // Configure CORS
   if (_corsConfig) {
     app.enableCors(_corsConfig);
   }
 
-  // Configurar Swagger
+  // Configure Swagger
   if (_appConfig.swagger.enabled) {
     const config = new DocumentBuilder()
       .setTitle(_appConfig.name)
@@ -59,7 +59,7 @@ async function bootstrap() {
     SwaggerModule.setup(_appConfig.swagger.path, app, document);
   }
 
-  // Configurar validación global
+  // Configure global validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -71,7 +71,7 @@ async function bootstrap() {
     }),
   );
 
-  // Configurar interceptor de serialización global
+  // Configure global serialization interceptor
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector), {
       excludeExtraneousValues: true,
@@ -83,10 +83,10 @@ async function bootstrap() {
 }
 
 /**
- * Ejecuta el proceso de inicialización de la aplicación.
+ * Executes the application initialization process.
  *
- * Maneja cualquier error no capturado durante el arranque, registrándolo
- * en la consola y terminando el proceso con un código de error (1).
+ * Handles any uncaught errors during startup, logging them
+ * to the console and terminating the process with an error code (1).
  */
 bootstrap().catch((error) => {
   console.error('Error starting the application:', error);

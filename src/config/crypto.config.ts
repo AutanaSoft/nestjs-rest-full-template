@@ -2,54 +2,60 @@ import { registerAs } from '@nestjs/config';
 
 export interface CryptoConfig {
   /**
-   * Clave secreta utilizada como base para derivar la clave de cifrado.
+   * Secret key used as a base for deriving the encryption key.
    *
    * @remarks
-   * Debe tener al menos 32 caracteres de longitud. Se recomienda generar un
-   * valor aleatorio de 64 caracteres hexadecimales utilizando el comando:
+   * Must be at least 32 characters long. It is recommended to generate a
+   * random 64-character hexadecimal value using the command:
    * `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
    */
   readonly secret: string;
 
   /**
-   * Salt utilizado en la derivación de la clave de cifrado mediante PBKDF2.
+   * Salt used in encryption key derivation using PBKDF2.
    *
    * @remarks
-   * Debe tener al menos 16 caracteres de longitud. Se recomienda generar un
-   * valor aleatorio de 32 caracteres hexadecimales utilizando el comando:
+   * Must be at least 16 characters long. It is recommended to generate a
+   * random 32-character hexadecimal value using the command:
    * `node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"`
    */
   readonly salt: string;
 
   /**
-   * Algoritmo de cifrado a utilizar.
+   * Encryption algorithm to use.
    *
    * @remarks
-   * Valor por defecto: 'aes-256-gcm'. Este algoritmo proporciona cifrado
-   * autenticado con integridad de datos incorporada.
+   * Default value: 'aes-256-gcm'. This algorithm provides authenticated
+   * encryption with built-in data integrity.
    */
   readonly algorithm: string;
 
   /**
-   * Longitud en bytes del vector de inicialización (IV).
+   * Length in bytes of the initialization vector (IV).
    *
    * @remarks
-   * Valor por defecto: 16 bytes. El IV es un valor aleatorio que se genera
-   * para cada operación de cifrado y garantiza que el mismo texto plano
-   * produzca diferentes textos cifrados.
+   * Default value: 16 bytes. The IV is a random value that is generated
+   * for each encryption operation and ensures that the same plain text
+   * produces different ciphertexts.
    */
   readonly ivLength: number;
 
   /**
-   * Longitud en bytes de la clave de cifrado derivada.
+   * Length in bytes of the derived encryption key.
    *
    * @remarks
-   * Valor por defecto: 32 bytes (256 bits). Esta es la longitud requerida
-   * para el algoritmo AES-256.
+   * Default value: 32 bytes (256 bits). This is the required length
+   * for the AES-256 algorithm.
    */
   readonly keyLength: number;
 }
 
+/**
+ * Factory function to create the cryptography configuration.
+ *
+ * @returns The validation and loaded configuration object.
+ * @throws {Error} If `ENCRYPTION_SECRET` or `ENCRYPTION_SALT` are missing or invalid.
+ */
 export const cryptoConfigFactory = (): CryptoConfig => {
   const secret = process.env.ENCRYPTION_SECRET;
   const salt = process.env.ENCRYPTION_SALT;
@@ -83,4 +89,7 @@ export const cryptoConfigFactory = (): CryptoConfig => {
   };
 };
 
+/**
+ * Registers the cryptography configuration under the 'crypto' namespace.
+ */
 export default registerAs('crypto', (): CryptoConfig => cryptoConfigFactory());
