@@ -1,16 +1,16 @@
+import 'dotenv/config';
 import path from 'node:path';
-import { defineConfig } from 'prisma/config';
-import { databaseConfigFactory } from './src/config/database.config';
+import { defineConfig, env } from 'prisma/config';
 
-const { baseDir, driver, host, port, user, password, name } = databaseConfigFactory();
+const _baseDir = path.join('src', 'modules', 'database', 'infrastructure', 'persistence', 'prisma');
 
 export default defineConfig({
-  schema: baseDir,
+  schema: _baseDir,
   migrations: {
-    path: path.join(baseDir, 'migrations'),
-    seed: path.join(baseDir, 'seeds/index.ts'),
+    path: path.join(_baseDir, 'migrations'),
+    seed: path.join(_baseDir, 'seeds/index.ts'),
   },
   datasource: {
-    url: `${driver}://${user}:${password}@${host}:${port}/${name}?schema=public`,
+    url: env('DATABASE_URL'),
   },
 });

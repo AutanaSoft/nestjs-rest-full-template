@@ -11,12 +11,15 @@ import { SharedModule } from '@shared/shared.module';
 import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './modules/health/health.module';
 
+import databaseConfig from '@config/database.config';
+import { DatabaseModule } from './modules/database/database.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [appConfig, corsConfig, loggerConfig, throttlerConfig, cryptoConfig],
+      load: [appConfig, corsConfig, loggerConfig, throttlerConfig, cryptoConfig, databaseConfig],
     }),
     LoggerModule.forRootAsync({
       imports: [ConfigModule.forFeature(loggerConfig)],
@@ -30,6 +33,7 @@ import { HealthModule } from './modules/health/health.module';
     }),
     SharedModule,
     HealthModule,
+    DatabaseModule,
   ],
   controllers: [],
   providers: [
