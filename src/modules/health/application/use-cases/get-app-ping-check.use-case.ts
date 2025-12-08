@@ -37,8 +37,7 @@ export class GetAppPingCheckUseCase {
     }
 
     const url = `http://${appConfig.server.host}:${appConfig.server.port}/`;
-    const name = appConfig.name;
 
-    return await this.http.pingCheck(name, url);
+    return await this.http.pingCheck('app', url);
   }
 }

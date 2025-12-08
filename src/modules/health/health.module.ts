@@ -1,3 +1,4 @@
+import { DatabaseModule } from '@modules/database/database.module';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
@@ -5,13 +6,14 @@ import {
   GetAppPingCheckUseCase,
   GetAppRootUseCase,
   GetAppStatusUseCase,
+  GetAppDbCheckUseCase,
 } from './application/use-cases';
 import { AppController, HttpHealthController } from './infrastructure/controllers';
 
 @Module({
-  imports: [TerminusModule, HttpModule],
+  imports: [TerminusModule, HttpModule, DatabaseModule],
   controllers: [AppController, HttpHealthController],
-  providers: [GetAppRootUseCase, GetAppStatusUseCase, GetAppPingCheckUseCase],
+  providers: [GetAppRootUseCase, GetAppStatusUseCase, GetAppPingCheckUseCase, GetAppDbCheckUseCase],
   exports: [],
 })
 export class HealthModule {}
