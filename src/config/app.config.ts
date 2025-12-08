@@ -37,7 +37,7 @@ export const appConfigFactory = (): AppConfig => ({
   appPrefixEnabled: process.env.APP_PREFIX_ENABLED === 'true',
   appPrefix: process.env.API_PREFIX ?? 'v1',
   server: {
-    host: process.env.SERVER_HOST ?? '0.0.0.0',
+    host: process.env.SERVER_HOST ?? 'localhost',
     port: Number(process.env.SERVER_PORT) || 3000,
   },
   swagger: {

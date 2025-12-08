@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SharedModule } from '@shared/shared.module';
 import { LoggerModule } from 'nestjs-pino';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LoggerModule } from 'nestjs-pino';
       useFactory: createThrottlerModuleOptions,
     }),
     SharedModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [
