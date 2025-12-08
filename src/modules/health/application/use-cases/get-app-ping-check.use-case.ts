@@ -29,7 +29,7 @@ export class GetAppPingCheckUseCase {
    * @returns A Promise that resolves to the health indicator result.
    * @throws {InternalServerErrorException} If the application configuration is missing.
    */
-  execute(): Promise<HealthIndicatorResult<string>> {
+  async execute(): Promise<HealthIndicatorResult<string>> {
     const appConfig = this.configService.get<AppConfig>('appConfig');
 
     if (!appConfig) {
@@ -39,6 +39,6 @@ export class GetAppPingCheckUseCase {
     const url = `http://${appConfig.server.host}:${appConfig.server.port}/`;
     const name = appConfig.name;
 
-    return this.http.pingCheck(name, url);
+    return await this.http.pingCheck(name, url);
   }
 }
