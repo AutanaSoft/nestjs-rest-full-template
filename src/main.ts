@@ -1,5 +1,6 @@
 import { appConfigFactory } from '@config/app.config';
 import { corsConfigFactory } from '@config/cors.config';
+import { serializationConfigFactory } from '@config/serialization.config';
 import { validationConfigFactory } from '@config/validation.config';
 import helmet from '@fastify/helmet';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
@@ -21,7 +22,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   // Get configuration service
   const _appConfig = appConfigFactory();
-  const _corsConfig = corsConfigFactory();
   const fastifyAdapter = new FastifyAdapter();
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter, {
@@ -45,9 +45,7 @@ async function bootstrap() {
   await app.register(helmet);
 
   // Configure CORS
-  if (_corsConfig) {
-    app.enableCors(_corsConfig);
-  }
+  app.enableCors(corsConfigFactory());
 
   // Configure Swagger
   if (_appConfig.swagger.enabled) {
@@ -65,9 +63,7 @@ async function bootstrap() {
 
   // Configure global serialization interceptor
   app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(app.get(Reflector), {
-      excludeExtraneousValues: true,
-    }),
+    new ClassSerializerInterceptor(app.get(Reflector), serializationConfigFactory()),
   );
 
   await app.listen(_appConfig.server.port, _appConfig.server.host);

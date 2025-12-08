@@ -1,8 +1,10 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 import { validationConfigFactory } from '../../src/config/validation.config';
+import { serializationConfigFactory } from '../../src/config/serialization.config';
 import { AppModule } from '../../src/app.module';
 
 /**
@@ -38,6 +40,9 @@ export async function createTestApp(
   const app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
   app.useGlobalPipes(new ValidationPipe(validationConfigFactory()));
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), serializationConfigFactory()),
+  );
 
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
