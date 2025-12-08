@@ -1,5 +1,6 @@
 import { appConfigFactory } from '@config/app.config';
 import { corsConfigFactory } from '@config/cors.config';
+import { validationConfigFactory } from '@config/validation.config';
 import helmet from '@fastify/helmet';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
@@ -60,16 +61,7 @@ async function bootstrap() {
   }
 
   // Configure global validation
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(validationConfigFactory()));
 
   // Configure global serialization interceptor
   app.useGlobalInterceptors(

@@ -16,6 +16,8 @@ Your task is to generate code, fixes, and refactors that comply with fundamental
 ## Language Guidelines
 
 - Always respond in Spanish when communicating with the developer
+- Always present the implementation plan in Spanish.
+- Always present the Walkthrough in Spanish.
 - Use English for all technical documentation:
   - maximum 100 characters per line
   - Comments in source code

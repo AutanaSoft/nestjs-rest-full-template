@@ -1,31 +1,24 @@
-import 'reflect-metadata';
-import { Test, TestingModule } from '@nestjs/testing';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
 import { GetAppPingCheckUseCase } from '../../src/modules/health/application/use-cases/get-app-ping-check.use-case';
 
-import { AppModule } from './../../src/app.module';
+import { createTestApp } from '../utils/create-test-app';
 
 describe('HealthController (e2e)', () => {
   let app: NestFastifyApplication;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideProvider(GetAppPingCheckUseCase)
-      .useValue({
-        execute: jest.fn().mockResolvedValue({
-          'NestJS Rest Full Template': {
-            status: 'up',
-          },
-        }),
-      })
-      .compile();
-
-    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-    await app.getHttpAdapter().getInstance().ready();
+    app = await createTestApp({
+      configureBuilder: (builder) => {
+        builder.overrideProvider(GetAppPingCheckUseCase).useValue({
+          execute: jest.fn().mockResolvedValue({
+            'NestJS Rest Full Template': {
+              status: 'up',
+            },
+          }),
+        });
+      },
+    });
   });
 
   afterAll(async () => {
