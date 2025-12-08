@@ -3,6 +3,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,
@@ -22,6 +23,7 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@/*": ["./src/*"],
       "@config/*": ["./src/config/*"],
       "@shared/*": ["./src/shared/*"],
       "@modules/*": ["./src/modules/*"]

@@ -1,4 +1,9 @@
 import type { Config } from 'jest';
+import { pathsToModuleNameMapper } from 'ts-jest';
+import * as fs from 'fs';
+
+const tsconfig = JSON.parse(fs.readFileSync('./tsconfig.json', 'utf8'));
+const compilerOptions = tsconfig.compilerOptions;
 
 const baseProject: Config = {
   transform: {
@@ -16,12 +21,9 @@ const baseProject: Config = {
   ],
   clearMocks: true,
   modulePaths: ['./'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@config/(.*)$': '<rootDir>/src/config/$1',
-    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
-    '^@modules/(.*)$': '<rootDir>/src/modules/$1',
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths as Record<string, string[]>, {
+    prefix: '<rootDir>/',
+  }),
 };
 
 const config: Config = {

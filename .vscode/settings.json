@@ -5,6 +5,7 @@
     "dtos",
     "inicialización",
     "nestjs",
+    "nodenext",
     "openssl",
     "postgres",
     "postgresql",
@@ -13,5 +14,6 @@
     "swcrc",
     "Timestamptz",
     "Uuid"
-  ]
+  ],
+  "remote.autoForwardPortsFallback": 0
 }
