@@ -3,8 +3,12 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
 
 import { AppStatusDto } from '@modules/health/application/dtos';
-import { GetAppDbCheckUseCase, GetAppStatusUseCase } from '@modules/health/application/use-cases';
-import { GetAppPingCheckUseCase } from '@modules/health/application/use-cases/get-app-ping-check.use-case';
+import {
+  GetAppDbCheckUseCase,
+  GetAppDiskCheckUseCase,
+  GetAppStatusUseCase,
+  GetAppPingCheckUseCase,
+} from '@modules/health/application/use-cases';
 
 /**
  * Controller for application health checks.
@@ -26,6 +30,7 @@ export class HttpHealthController {
     private readonly health: HealthCheckService,
     private readonly getAppPingCheckUseCase: GetAppPingCheckUseCase,
     private readonly getAppDbCheckUseCase: GetAppDbCheckUseCase,
+    private readonly getAppDiskCheckUseCase: GetAppDiskCheckUseCase,
     private readonly getAppStatusUseCase: GetAppStatusUseCase,
   ) {}
 
@@ -45,6 +50,7 @@ export class HttpHealthController {
     return this.health.check([
       () => this.getAppPingCheckUseCase.execute(),
       () => this.getAppDbCheckUseCase.execute(),
+      () => this.getAppDiskCheckUseCase.execute(),
     ]);
   }
 

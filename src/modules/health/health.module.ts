@@ -7,13 +7,20 @@ import {
   GetAppRootUseCase,
   GetAppStatusUseCase,
   GetAppDbCheckUseCase,
+  GetAppDiskCheckUseCase,
 } from './application/use-cases';
 import { AppController, HttpHealthController } from './infrastructure/controllers';
 
 @Module({
   imports: [TerminusModule, HttpModule, DatabaseModule],
   controllers: [AppController, HttpHealthController],
-  providers: [GetAppRootUseCase, GetAppStatusUseCase, GetAppPingCheckUseCase, GetAppDbCheckUseCase],
+  providers: [
+    GetAppRootUseCase,
+    GetAppStatusUseCase,
+    GetAppPingCheckUseCase,
+    GetAppDbCheckUseCase,
+    GetAppDiskCheckUseCase,
+  ],
   exports: [],
 })
 export class HealthModule {}

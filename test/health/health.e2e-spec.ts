@@ -1,6 +1,10 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { GetAppPingCheckUseCase } from '../../src/modules/health/application/use-cases/get-app-ping-check.use-case';
+import {
+  GetAppDbCheckUseCase,
+  GetAppDiskCheckUseCase,
+  GetAppPingCheckUseCase,
+} from '../../src/modules/health/application/use-cases';
 
 import { createTestApp } from '../utils/create-test-app';
 
@@ -12,7 +16,24 @@ describe('HealthController (e2e)', () => {
       configureBuilder: (builder) => {
         builder.overrideProvider(GetAppPingCheckUseCase).useValue({
           execute: jest.fn().mockResolvedValue({
-            'NestJS Rest Full Template': {
+            app: {
+              status: 'up',
+            },
+          }),
+        });
+        builder.overrideProvider(GetAppDbCheckUseCase).useValue({
+          execute: jest.fn().mockResolvedValue({
+            db: {
+              status: 'up',
+            },
+          }),
+        });
+        builder.overrideProvider(GetAppDiskCheckUseCase).useValue({
+          execute: jest.fn().mockResolvedValue({
+            storage_percent: {
+              status: 'up',
+            },
+            storage_size: {
               status: 'up',
             },
           }),
@@ -35,6 +56,11 @@ describe('HealthController (e2e)', () => {
         expect(res.body).toHaveProperty('error');
         expect(res.body).toHaveProperty('details');
         expect(res.body.status).toBe('ok');
+        // Check for specific health indicators
+        expect(res.body.info).toHaveProperty('app');
+        expect(res.body.info).toHaveProperty('db');
+        expect(res.body.info).toHaveProperty('storage_percent');
+        expect(res.body.info).toHaveProperty('storage_size');
       });
   });
 

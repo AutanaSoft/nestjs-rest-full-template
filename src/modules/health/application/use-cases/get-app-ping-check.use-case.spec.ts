@@ -63,7 +63,7 @@ describe('GetAppPingCheckUseCase', () => {
 
       expect(mockConfigService.get).toHaveBeenCalledWith('appConfig');
       expect(mockHttpHealthIndicator.pingCheck).toHaveBeenCalledWith(
-        'test-app',
+        'app',
         'http://localhost:3000/',
       );
       expect(result).toEqual(expectedResult);
