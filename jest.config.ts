@@ -17,7 +17,7 @@ const baseProject: Config = {
   clearMocks: true,
   modulePaths: ['./'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
     '^@config/(.*)$': '<rootDir>/src/config/$1',
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',
     '^@modules/(.*)$': '<rootDir>/src/modules/$1',

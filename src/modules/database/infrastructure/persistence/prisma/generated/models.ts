@@ -7,5 +7,5 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/UserDbEntity.js';
-export type * from './commonInputTypes.js';
+export type * from './models/UserDbEntity';
+export type * from './commonInputTypes';
