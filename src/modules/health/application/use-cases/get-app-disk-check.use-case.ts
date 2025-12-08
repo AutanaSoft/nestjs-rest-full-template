@@ -30,7 +30,7 @@ export class GetAppDiskCheckUseCase {
     });
 
     const sizeResult = await this.disk.checkStorage('storage_size', {
-      threshold: 50 * 1024 * 1024 * 1024, // 50GB in bytes
+      threshold: 100 * 1024 * 1024 * 1024, // 100GB in bytes
       path: '/',
     });
 

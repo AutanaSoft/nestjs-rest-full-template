@@ -59,7 +59,7 @@ describe('GetAppDiskCheckUseCase', () => {
       expect(mockDiskHealthIndicator.checkStorage).toHaveBeenCalledWith(
         'storage_size',
         expect.objectContaining({
-          threshold: 53687091200, // 50GB
+          threshold: 107374182400, // 100GB
           path: '/',
         }),
       );
