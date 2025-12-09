@@ -13,6 +13,7 @@ import { HealthModule } from './modules/health/health.module';
 
 import databaseConfig from '@config/database.config';
 import { DatabaseModule } from './modules/database/database.module';
+import { AuthModule } from './modules/auth/infrastructure/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { DatabaseModule } from './modules/database/database.module';
     SharedModule,
     HealthModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [

@@ -1,4 +1,4 @@
-/// Roles asignados a los usuarios
+// User roles
 enum UserRole {
   SUPER_ADMIN
   ADMIN
@@ -9,7 +9,7 @@ enum UserRole {
   GUEST
 }
 
-/// Estado de los usuarios en el sistema
+// User Status
 enum UserStatus {
   REGISTERED
   ACTIVE
