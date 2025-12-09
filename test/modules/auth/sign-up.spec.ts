@@ -49,7 +49,7 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
       const dto: SignUpDto = {
         ...testUserData,
         email: 'complex.user@api-test.com',
-        userName: `${testUserData.userName}_1`,
+        userName: `${testUserData.userName}_1.test`,
       };
 
       const response = await request(app.getHttpServer())
@@ -92,8 +92,12 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
         .expect(400);
 
       const body = response.body as { message: string | string[] };
-      expect(JSON.stringify(body.message)).toContain(
-        'Username must contain only letters, numbers, dots and underscores',
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Username must contain only letters, numbers, dots and underscores',
+          ),
+        ]),
       );
     });
 
@@ -110,14 +114,30 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
         .expect(400);
 
       const body = response.body as { message: string | string[] };
-      expect(JSON.stringify(body.message)).toContain(
-        'Password must contain at least one uppercase letter and one special character',
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+          ),
+        ]),
       );
     });
 
     it('should fail if password does not contain special characters', async () => {
       const dto = { ...testUserData, password: 'Password123' };
-      await request(app.getHttpServer()).post('/auth/sign-up').send(dto).expect(400);
+      const response = await request(app.getHttpServer())
+        .post('/auth/sign-up')
+        .send(dto)
+        .expect(400);
+
+      const body = response.body as { message: string | string[] };
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+          ),
+        ]),
+      );
     });
 
     it('should fail if request contains non-whitelisted properties', async () => {
