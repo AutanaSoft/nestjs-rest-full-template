@@ -13,8 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "rimraf coverage .tmp && jest",
-    "test:cov": "rimraf coverage .tmp && jest --coverage",
+    "test": "rimraf coverage .tmp && jest --coverage",
     "test:e2e": "jest --selectProjects e2e",
     "test:unit": "jest --selectProjects unit",
     "prepare": "husky"
