@@ -2,8 +2,10 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 
 import { AppModule } from '@/app.module';
 import { appConfigFactory } from '@/config/app.config';
+import { corsConfigFactory } from '@/config/cors.config';
 import { serializationConfigFactory } from '@/config/serialization.config';
 import { validationConfigFactory } from '@/config/validation.config';
+import helmet from '@fastify/helmet';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -26,6 +28,20 @@ describe('App (e2e)', () => {
     // Initialize the application
     app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
+    // App config
+    const config = appConfigFactory();
+
+    // Configure global prefix
+    if (config.appPrefixEnabled) {
+      app.setGlobalPrefix(config.appPrefix);
+    }
+
+    // Configure security (Helmet)
+    await app.register(helmet);
+
+    // Configure CORS
+    app.enableCors(corsConfigFactory());
+
     // Configure the application
     app.useGlobalPipes(new ValidationPipe(validationConfigFactory()));
 
@@ -34,12 +50,8 @@ describe('App (e2e)', () => {
       new ClassSerializerInterceptor(app.get(Reflector), serializationConfigFactory()),
     );
 
-    // App config
-    const config = appConfigFactory();
+    // Start the server
     await app.listen(config.server.port, config.server.host);
-
-    // Initialize the application
-    await app.init();
 
     // Initialize the server
     await app.getHttpAdapter().getInstance().ready();
