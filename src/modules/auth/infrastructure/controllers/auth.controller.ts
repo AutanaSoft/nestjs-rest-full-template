@@ -31,7 +31,8 @@ export class AuthController {
 
   @Post('sign-up')
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiResponse({ status: 201, description: 'User successfully registered' })
+  @ApiResponse({ status: 201, description: 'User successfully registered', type: UserEntity })
+  @ApiResponse({ status: 409, description: 'Email or Username already exists' })
   async signUp(@Body() dto: SignUpDto): Promise<UserEntity> {
     return this.signUpUseCase.execute(dto);
   }
@@ -39,8 +40,9 @@ export class AuthController {
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
-  @ApiResponse({ status: 200, description: 'User successfully logged in' })
-  async signIn(@Body() dto: SignInDto): Promise<void> {
+  @ApiResponse({ status: 200, description: 'User successfully logged in', type: UserEntity })
+  @ApiResponse({ status: 401, description: 'Invalid credentials or User blocked' })
+  async signIn(@Body() dto: SignInDto): Promise<UserEntity> {
     return this.signInUseCase.execute(dto);
   }
 

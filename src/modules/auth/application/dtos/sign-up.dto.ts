@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Length, Matches, MaxLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsAllowedData } from '@modules/auth/application/decorators/is-allowed-data.decorator';
@@ -12,6 +13,7 @@ export class SignUpDto {
    * Validations: email format, max 64 chars, forbidden domains.
    * Transformation: trim spaces and convert to lowercase.
    */
+  @ApiProperty({ example: 'john@example.com', description: 'The email of the user' })
   @IsNotEmpty()
   @IsString()
   @IsEmail()
@@ -27,6 +29,7 @@ export class SignUpDto {
    * Validations: 3-20 chars, start with letter, alphanumeric only, forbidden names.
    * Transformation: trim spaces.
    */
+  @ApiProperty({ example: 'johndoe', description: 'The username of the user' })
   @IsNotEmpty()
   @IsString()
   @Length(3, 20)
@@ -41,6 +44,7 @@ export class SignUpDto {
    * Validations: 6-16 chars, alphanumeric, special chars required.
    * Transformation: trim spaces (caution: usually passwords are not trimmed, but requested by user for all inputs).
    */
+  @ApiProperty({ example: 'Password123!', description: 'The password of the user' })
   @IsNotEmpty()
   @IsString()
   @Length(6, 16)

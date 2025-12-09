@@ -1,9 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { AuthRepository } from '@modules/auth/domain/repositories';
 import { SignUpDto } from '@modules/auth/application/dtos';
 import { UserEntity } from '@modules/auth/domain/entities';
+import { AuthRepository } from '@modules/auth/domain/repositories';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { HashingService } from '@shared/application/services/hashing.service';
-import { UserRole, UserStatus } from '@modules/auth/domain/enums';
 
 /**
  * Use case to handle user registration (Sign Up).
@@ -38,15 +37,7 @@ export class SignUpUseCase {
 
     const hashedPassword = await this.hashingService.hash(dto.password);
 
-    const newUser = new UserEntity({
-      email: dto.email,
-      userName: dto.userName,
-      password: hashedPassword,
-      role: UserRole.USER,
-      status: UserStatus.ACTIVE,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    const newUser = UserEntity.create(dto.email, dto.userName, hashedPassword);
 
     return await this.authRepository.create(newUser);
   }
