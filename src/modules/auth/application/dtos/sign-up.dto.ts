@@ -34,7 +34,9 @@ export class SignUpDto {
   @IsString()
   @Length(3, 20)
   @Matches(/^[a-zA-Z]/, { message: 'Username must start with a letter' })
-  @Matches(/^[a-zA-Z0-9]+$/, { message: 'Username must contain only letters and numbers' })
+  @Matches(/^[a-zA-Z0-9._]+$/, {
+    message: 'Username must contain only letters, numbers, dots and underscores',
+  })
   @Transform(({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value))
   @IsAllowedData('username')
   userName: string;
@@ -48,11 +50,12 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   @Length(6, 16)
-  @Matches(/^[a-zA-Z0-9$#*?!%]+$/, {
-    message: 'Password can only contain letters, numbers, and $#*?!% characters',
+  @Matches(/^[a-zA-Z0-9@$!%*?&.]+$/, {
+    message: 'Password can only contain letters, numbers, and @$!%*?&. characters',
   })
-  @Matches(/(?=.*[$#*?!%])/, {
-    message: 'Password must contain at least one special character: $#*?!%',
+  @Matches(/(?=.*[A-Z])(?=.*[@$!%*?&.])/, {
+    message:
+      'Password must contain at least one uppercase letter and one special character: @$!%*?&.',
   })
   @Transform(({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value))
   password: string;

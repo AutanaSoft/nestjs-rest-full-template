@@ -1,22 +1,58 @@
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import request from 'supertest';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
-import { createTestApp } from './utils/create-test-app';
+import { AppModule } from '@/app.module';
+import { appConfigFactory } from '@/config/app.config';
+import { serializationConfigFactory } from '@/config/serialization.config';
+import { validationConfigFactory } from '@/config/validation.config';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Test, TestingModule } from '@nestjs/testing';
+import { healthControllerTest } from './modules/health/health.spec';
+import { authControllerTest } from './modules/auth/auth.controller.spec';
 
-describe('AppController (e2e)', () => {
+describe('App (e2e)', () => {
   let app: NestFastifyApplication;
 
-  beforeEach(async () => {
-    app = await createTestApp();
+  /**
+   * Initializes the application before all tests.
+   * Use specific port and host from configuration to ensure consistency.
+   */
+  beforeAll(async () => {
+    // Initialize the module
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    // Initialize the application
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+
+    // Configure the application
+    app.useGlobalPipes(new ValidationPipe(validationConfigFactory()));
+
+    // Configure serialization
+    app.useGlobalInterceptors(
+      new ClassSerializerInterceptor(app.get(Reflector), serializationConfigFactory()),
+    );
+
+    // App config
+    const config = appConfigFactory();
+    await app.listen(config.server.port, config.server.host);
+
+    // Initialize the application
+    await app.init();
+
+    // Initialize the server
+    await app.getHttpAdapter().getInstance().ready();
   });
 
+  /**
+   * Closes the application after all tests.
+   */
   afterAll(async () => {
     await app.close();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200).expect({
-      status: 'up',
-    });
-  });
+  // Test suites
+  healthControllerTest(() => app);
+  authControllerTest(() => app);
 });

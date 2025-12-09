@@ -64,7 +64,7 @@ jobs:
         run: pnpm build
 
       - name: Run Database Migrations (Push)
-        run: npx prisma db push --schema=src/modules/database/infrastructure/persistence/prisma/schema.prisma
+        run: npx prisma db push
 
       - name: Run Unit Tests
         run: pnpm test:unit

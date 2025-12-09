@@ -6,8 +6,8 @@ import { DiskHealthIndicator, HealthIndicatorResult } from '@nestjs/terminus';
  *
  * @remarks
  * Uses the DiskHealthIndicator to verify that:
- * 1. Used storage does not exceed 50%.
- * 2. Used storage does not exceed 50GB.
+ * 1. Used storage does not exceed 80%.
+ * 2. Used storage does not exceed 100GB.
  */
 @Injectable()
 export class GetAppDiskCheckUseCase {
@@ -25,7 +25,7 @@ export class GetAppDiskCheckUseCase {
    */
   async execute(): Promise<HealthIndicatorResult> {
     const percentResult = await this.disk.checkStorage('storage_percent', {
-      thresholdPercent: 0.5,
+      thresholdPercent: 0.8,
       path: '/',
     });
 

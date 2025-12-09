@@ -24,6 +24,8 @@
     "test": "rimraf coverage .tmp && jest --coverage",
     "test:e2e": "jest --selectProjects e2e",
     "test:unit": "jest --selectProjects unit",
+    "db:push": "prisma db push",
+    "db:validate": "prisma validate",
     "prepare": "husky"
   },
   "dependencies": {
@@ -64,7 +66,7 @@
     "@swc/jest": "^0.2.39",
     "@types/bcrypt": "^6.0.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.10.7",
+    "@types/node": "^24.10.2",
     "@types/pg": "^8.15.6",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
@@ -83,6 +85,17 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.49.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/engines",
+      "@scarf/scarf",
+      "@swc/core",
+      "bcrypt",
+      "prisma",
+      "unrs-resolver"
+    ]
   }
 }
