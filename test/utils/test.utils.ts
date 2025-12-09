@@ -4,7 +4,7 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 
 export const testUserData: SignUpDto = {
   email: 'test@api-test.com',
-  password: 'Crtg1hs#kssss',
+  password: 'Password123!',
   userName: 'TestUser',
 };
 
@@ -13,7 +13,7 @@ export async function cleanupTestUser(app: NestFastifyApplication): Promise<void
   await dataSource.userDbEntity.deleteMany({
     where: {
       userName: {
-        equals: testUserData.userName,
+        contains: testUserData.userName,
       },
     },
   });
