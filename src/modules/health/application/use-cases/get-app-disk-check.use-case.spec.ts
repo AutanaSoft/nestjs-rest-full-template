@@ -50,7 +50,7 @@ describe('GetAppDiskCheckUseCase', () => {
       expect(mockDiskHealthIndicator.checkStorage).toHaveBeenCalledWith(
         'storage_percent',
         expect.objectContaining({
-          thresholdPercent: 0.5,
+          thresholdPercent: 0.8,
           path: '/',
         }),
       );
