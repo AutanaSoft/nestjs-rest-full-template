@@ -49,7 +49,7 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
       const dto: SignUpDto = {
         ...testUserData,
         email: 'complex.user@api-test.com',
-        userName: `${testUserData.userName}_1`,
+        userName: `${testUserData.userName}_1.test`,
       };
 
       const response = await request(app.getHttpServer())
