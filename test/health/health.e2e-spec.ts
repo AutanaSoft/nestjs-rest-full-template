@@ -51,16 +51,24 @@ describe('HealthController (e2e)', () => {
       .get('/health')
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('status');
-        expect(res.body).toHaveProperty('info');
-        expect(res.body).toHaveProperty('error');
-        expect(res.body).toHaveProperty('details');
-        expect(res.body.status).toBe('ok');
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const body: {
+          status: string;
+          info: Record<string, unknown>;
+          error: unknown;
+          details: unknown;
+        } = res.body;
+
+        expect(body).toHaveProperty('status');
+        expect(body).toHaveProperty('info');
+        expect(body).toHaveProperty('error');
+        expect(body).toHaveProperty('details');
+        expect(body.status).toBe('ok');
         // Check for specific health indicators
-        expect(res.body.info).toHaveProperty('app');
-        expect(res.body.info).toHaveProperty('db');
-        expect(res.body.info).toHaveProperty('storage_percent');
-        expect(res.body.info).toHaveProperty('storage_size');
+        expect(body.info).toHaveProperty('app');
+        expect(body.info).toHaveProperty('db');
+        expect(body.info).toHaveProperty('storage_percent');
+        expect(body.info).toHaveProperty('storage_size');
       });
   });
 

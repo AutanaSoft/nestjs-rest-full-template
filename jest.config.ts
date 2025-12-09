@@ -7,11 +7,12 @@ const compilerOptions = tsconfig.compilerOptions;
 
 const baseProject: Config = {
   transform: {
-    '^.+\\.(t|j)s$': ['@swc/jest', { configFile: '.swcrc' }],
+    '^.+\.(t|j)s$': ['@swc/jest', { configFile: '.swcrc' }],
   },
   testEnvironment: 'node',
   cacheDirectory: '.tmp/jestCache',
   coverageDirectory: 'coverage',
+  moduleFileExtensions: ['js', 'json', 'ts'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.(t|j)s',
     '!<rootDir>/src/config/**/*.(t|j)s',
@@ -19,11 +20,13 @@ const baseProject: Config = {
     '!<rootDir>/src/modules/database/**/*.(t|j)s',
     '!<rootDir>/src/**/index.(t|j)s',
   ],
-  clearMocks: true,
+  restoreMocks: true,
   modulePaths: ['./'],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths as Record<string, string[]>, {
-    prefix: '<rootDir>/',
-  }),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths as Record<string, string[]>,
+    {
+      prefix: '<rootDir>/',
+    }
+  ),
 };
 
 const config: Config = {
@@ -37,6 +40,7 @@ const config: Config = {
       ...baseProject,
       displayName: 'e2e',
       testMatch: ['<rootDir>/test/**/*.e2e-spec.ts'],
+      testTimeout: 30000,
     },
   ],
   coverageThreshold: {
