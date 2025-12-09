@@ -24,6 +24,8 @@
     "test": "rimraf coverage .tmp && jest --coverage",
     "test:e2e": "jest --selectProjects e2e",
     "test:unit": "jest --selectProjects unit",
+    "db:push": "prisma db push",
+    "db:validate": "prisma validate",
     "prepare": "husky"
   },
   "dependencies": {
