@@ -13,7 +13,7 @@ import {
 } from '@modules/auth/application/use-cases';
 
 import { AuthRepository } from '@modules/auth/domain/repositories';
-import { AuthRepositoryImpl } from '@modules/auth/infrastructure/persistence';
+import { AuthPrismaRepository } from '@modules/auth/infrastructure/persistence';
 
 @Module({
   imports: [DatabaseModule, SharedModule],
@@ -28,7 +28,7 @@ import { AuthRepositoryImpl } from '@modules/auth/infrastructure/persistence';
     // Repositories
     {
       provide: AuthRepository,
-      useClass: AuthRepositoryImpl,
+      useClass: AuthPrismaRepository,
     },
   ],
   exports: [],
