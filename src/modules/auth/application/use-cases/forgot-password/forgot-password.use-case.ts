@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthRepository } from '@modules/auth/domain/repositories';
+import { UserRepository } from '@modules/users/domain/repositories';
 import { ForgotPasswordDto } from '@modules/auth/application/dtos';
 
 @Injectable()
 export class ForgotPasswordUseCase {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(dto: ForgotPasswordDto): Promise<void> {
     await Promise.resolve(dto);

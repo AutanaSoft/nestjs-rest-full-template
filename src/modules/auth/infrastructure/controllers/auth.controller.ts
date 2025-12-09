@@ -16,7 +16,7 @@ import {
   RecoveryPasswordDto,
   VerifyEmailDto,
 } from '@modules/auth/application/dtos';
-import { UserEntity } from '@modules/auth/domain/entities';
+import { UserEntity } from '@modules/users/domain/entities';
 
 @ApiTags('Auth')
 @Controller('auth')

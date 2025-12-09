@@ -3,15 +3,15 @@ import {
   UserRole as PrismaUserRole,
   UserStatus as PrismaUserStatus,
 } from '@prisma/client';
-import { UserEntity } from '@modules/auth/domain/entities';
-import { UserRole, UserStatus } from '@modules/auth/domain/enums';
+import { UserEntity } from '../../../domain/entities';
+import { UserRole, UserStatus } from '../../../domain/enums';
 
 /**
  * Mapper for transforming between User Domain Entities and Database Entities.
  *
  * Handles the conversion of data structures to ensure the domain is decoupled from persistence details.
  */
-export class AuthMapper {
+export class UserMapper {
   /**
    * Converts a database entity to a domain entity.
    *

@@ -1,6 +1,6 @@
 import { SignUpDto } from '@modules/auth/application/dtos';
-import { UserEntity } from '@modules/auth/domain/entities';
-import { AuthRepository } from '@modules/auth/domain/repositories';
+import { UserEntity } from '@modules/users/domain/entities';
+import { UserRepository } from '@modules/users/domain/repositories';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { HashingService } from '@shared/application/services/hashing.service';
 
@@ -13,7 +13,7 @@ import { HashingService } from '@shared/application/services/hashing.service';
 @Injectable()
 export class SignUpUseCase {
   constructor(
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
     private readonly hashingService: HashingService,
   ) {}
 
@@ -25,12 +25,12 @@ export class SignUpUseCase {
    * @throws {ConflictException} If the email or username already exists.
    */
   async execute(dto: SignUpDto): Promise<UserEntity> {
-    const existingEmail = await this.authRepository.findByEmail(dto.email);
+    const existingEmail = await this.userRepository.findByEmail(dto.email);
     if (existingEmail) {
       throw new ConflictException('Email already exists');
     }
 
-    const existingUser = await this.authRepository.findByUserName(dto.userName);
+    const existingUser = await this.userRepository.findByUserName(dto.userName);
     if (existingUser) {
       throw new ConflictException('Username already exists');
     }
@@ -39,6 +39,6 @@ export class SignUpUseCase {
 
     const newUser = UserEntity.create(dto.email, dto.userName, hashedPassword);
 
-    return await this.authRepository.create(newUser);
+    return await this.userRepository.create(newUser);
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@modules/database/application/services/prisma.service';
-import { AuthRepository } from '@modules/auth/domain/repositories';
-import { UserEntity } from '@modules/auth/domain/entities';
+import { UserRepository } from '../../../domain/repositories';
+import { UserEntity } from '../../../domain/entities';
 import { CryptoService } from '@shared/infrastructure/services/crypto.service';
-import { AuthMapper } from './mappers';
+import { UserMapper } from '../mappers';
 
 @Injectable()
-export class AuthPrismaRepository implements AuthRepository {
+export class UserPrismaRepository implements UserRepository {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly cryptoService: CryptoService,
@@ -31,7 +31,7 @@ export class AuthPrismaRepository implements AuthRepository {
     // We return the entity with the plain email because the Use Case expects it that way
     // (Or we could decrypt it back, but we have it in 'user' arg).
     // Better to map from DB result to be consistent.
-    const domainUser = AuthMapper.toDomain(created);
+    const domainUser = UserMapper.toDomain(created);
     // Restore plain email because it is encrypted in DB
     domainUser.email = this.cryptoService.decrypt(created.email);
     return domainUser;
@@ -46,7 +46,7 @@ export class AuthPrismaRepository implements AuthRepository {
 
     if (!user) return null;
 
-    const domainUser = AuthMapper.toDomain(user);
+    const domainUser = UserMapper.toDomain(user);
     domainUser.email = this.cryptoService.decrypt(user.email);
     return domainUser;
   }
@@ -58,7 +58,7 @@ export class AuthPrismaRepository implements AuthRepository {
 
     if (!user) return null;
 
-    const domainUser = AuthMapper.toDomain(user);
+    const domainUser = UserMapper.toDomain(user);
     domainUser.email = this.cryptoService.decrypt(user.email);
     return domainUser;
   }
@@ -67,11 +67,11 @@ export class AuthPrismaRepository implements AuthRepository {
     const user = await this.prismaService.userDbEntity.findUnique({
       where: { userName },
     });
-    return user ? AuthMapper.toDomain(user) : null;
+    return user ? UserMapper.toDomain(user) : null;
   }
 
   async update(user: UserEntity): Promise<UserEntity> {
-    const dataToUpdate = AuthMapper.toPersistence(user);
+    const dataToUpdate = UserMapper.toPersistence(user);
 
     // Always encrypt and hash email on update to ensure consistency
     // Optimization: In real app, check if email changed.
@@ -86,7 +86,7 @@ export class AuthPrismaRepository implements AuthRepository {
       data: dataToUpdate,
     });
 
-    const domainUser = AuthMapper.toDomain(updated);
+    const domainUser = UserMapper.toDomain(updated);
     domainUser.email = this.cryptoService.decrypt(updated.email);
     return domainUser;
   }

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthRepository } from '@modules/auth/domain/repositories';
+import { UserRepository } from '@modules/users/domain/repositories';
 import { VerifyEmailDto } from '@modules/auth/application/dtos';
 
 @Injectable()
 export class VerifyEmailUseCase {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(dto: VerifyEmailDto): Promise<void> {
     await Promise.resolve(dto);

@@ -12,11 +12,10 @@ import {
   VerifyEmailUseCase,
 } from '@modules/auth/application/use-cases';
 
-import { AuthRepository } from '@modules/auth/domain/repositories';
-import { AuthPrismaRepository } from '@modules/auth/infrastructure/persistence';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [DatabaseModule, SharedModule],
+  imports: [DatabaseModule, SharedModule, UsersModule],
   controllers: [AuthController],
   providers: [
     // Use Cases
@@ -26,10 +25,6 @@ import { AuthPrismaRepository } from '@modules/auth/infrastructure/persistence';
     RecoveryPasswordUseCase,
     VerifyEmailUseCase,
     // Repositories
-    {
-      provide: AuthRepository,
-      useClass: AuthPrismaRepository,
-    },
   ],
   exports: [],
 })

@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthRepository } from '@modules/auth/domain/repositories';
 import { SignInDto } from '@modules/auth/application/dtos';
 import { HashingService } from '@shared/application/services/hashing.service';
-import { UserEntity } from '@modules/auth/domain/entities';
-import { UserStatus } from '@modules/auth/domain/enums';
+import { UserEntity } from '@modules/users/domain/entities';
+import { UserStatus } from '@modules/users/domain/enums';
+import { UserRepository } from '@modules/users/domain/repositories';
 
 /**
  * Use case to handle user sign in.
@@ -13,7 +13,7 @@ import { UserStatus } from '@modules/auth/domain/enums';
 @Injectable()
 export class SignInUseCase {
   constructor(
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
     private readonly hashingService: HashingService,
   ) {}
 
@@ -25,7 +25,7 @@ export class SignInUseCase {
    * @throws {UnauthorizedException} If credentials are invalid or user is blocked.
    */
   async execute(dto: SignInDto): Promise<UserEntity> {
-    const user = await this.authRepository.findByEmail(dto.email);
+    const user = await this.userRepository.findByEmail(dto.email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');

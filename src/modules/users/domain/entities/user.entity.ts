@@ -2,47 +2,39 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { UserRole, UserStatus } from '../enums';
 
-/**
- * Domain entity representing a User.
- *
- * Encapsulates the core data and behavior of a user within the domain.
- */
 export class UserEntity {
-  /** Unique identifier of the user */
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'Unique identifier',
-  })
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'User ID' })
   @Expose()
-  id: string;
+  id?: string;
 
-  /** User's email address */
-  @ApiProperty({ example: 'user@example.com', description: 'User email address' })
+  @ApiProperty({ example: 'john.doe@example.com', description: 'User email' })
   @Expose()
-  email: string;
-
-  /** Unique username */
-  @ApiProperty({ example: 'johndoe', description: 'Unique username' })
-  @Expose()
-  userName: string;
+  email!: string;
 
   /**
-   * Hashed password of the user.
-   * Optional because it might not be loaded in all contexts or strictly required for all operations.
+   * Internal property for checking uniqueness or searching.
+   * Not exposed to the API response usually, although here it is marked Expose.
+   * If we want to hide it, we should remove @Expose or use @Exclude.
    */
+  @Expose()
+  emailHash?: string;
+
+  @ApiProperty({ example: 'john_doe', description: 'Username' })
+  @Expose()
+  userName!: string;
+
+  // Password should NEVER be exposed.
   password?: string;
 
-  /** Current status of the user (e.g., ACTIVE, INACTIVE) */
-  @ApiProperty({ enum: UserStatus, example: UserStatus.ACTIVE, description: 'User status' })
+  @ApiProperty({ enum: UserStatus, example: UserStatus.REGISTERED, description: 'User status' })
   @Expose()
-  status?: UserStatus;
+  status: UserStatus = UserStatus.REGISTERED;
 
-  /** Role assigned to the user (e.g., USER, ADMIN) */
   @ApiProperty({ enum: UserRole, example: UserRole.USER, description: 'User role' })
   @Expose()
-  role?: UserRole;
+  role: UserRole = UserRole.USER;
 
-  /** Timestamp when the email was verified */
+  /** Timestamp of email verification */
   @ApiProperty({
     example: '2023-01-01T00:00:00Z',
     description: 'Email verification timestamp',

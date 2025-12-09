@@ -1,11 +1,11 @@
 import { UserEntity } from '../entities/user.entity';
 
 /**
- * Abstract repository definition for Auth/User operations.
+ * Abstract repository definition for User operations.
  *
  * Defines the contract for persistence operations related to users.
  */
-export abstract class AuthRepository {
+export abstract class UserRepository {
   /**
    * Persists a new user.
    *
