@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@modules/database/database.module';
 import { SharedModule } from '@shared/shared.module';
 
-import { AuthController } from './controllers/auth.controller';
+import { AuthController } from './infrastructure/controllers/auth.controller';
 
 import {
   SignUpUseCase,
