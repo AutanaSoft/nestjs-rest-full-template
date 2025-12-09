@@ -50,6 +50,9 @@ describe('App (e2e)', () => {
       new ClassSerializerInterceptor(app.get(Reflector), serializationConfigFactory()),
     );
 
+    // Initialize the application
+    await app.init();
+
     // Start the server
     await app.listen(config.server.port, config.server.host);
 
