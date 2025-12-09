@@ -117,7 +117,15 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
 
     it('should fail if password does not contain special characters', async () => {
       const dto = { ...testUserData, password: 'Password123' };
-      await request(app.getHttpServer()).post('/auth/sign-up').send(dto).expect(400);
+      const response = await request(app.getHttpServer())
+        .post('/auth/sign-up')
+        .send(dto)
+        .expect(400);
+
+      const body = response.body as { message: string | string[] };
+      expect(JSON.stringify(body.message)).toContain(
+        'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+      );
     });
 
     it('should fail if request contains non-whitelisted properties', async () => {
