@@ -3,8 +3,8 @@ import {
   UserRole as PrismaUserRole,
   UserStatus as PrismaUserStatus,
 } from '@prisma/client';
-import { UserEntity } from '../../../domain/entities';
-import { UserRole, UserStatus } from '../../../domain/enums';
+import { UserEntity } from '@modules/users/domain/entities';
+import { UserRole, UserStatus } from '@modules/users/domain/enums';
 
 /**
  * Mapper for transforming between User Domain Entities and Database Entities.
