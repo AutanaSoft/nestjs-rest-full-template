@@ -111,7 +111,7 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
 
       const body = response.body as { message: string | string[] };
       expect(JSON.stringify(body.message)).toContain(
-        'Password must contain at least one uppercase letter and one special character: @$!%*?&.',
+        'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
       );
     });
 

@@ -55,7 +55,7 @@ export class SignUpDto {
   })
   @Matches(/(?=.*[A-Z])(?=.*[@$!%*?&.])/, {
     message:
-      'Password must contain at least one uppercase letter and one special character: @$!%*?&.',
+      'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
   })
   @Transform(({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value))
   password: string;
