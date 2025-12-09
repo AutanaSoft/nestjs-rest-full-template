@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: api_template_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/api_template_db?schema=public
+      ENCRYPTION_SECRET: 1e6918cd90ad6886128ee77e5b67a1cfb333877da51107da9c3b6c30339db269
+      ENCRYPTION_SALT: 895b60b0ad5e8f45ea35a96c3ace7819
+      APP_ENV: test
+      THROTTLE_TTL: 60000
+      THROTTLE_LIMIT: 100
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check Formatting
+        run: npx prettier --check "src/**/*.ts" "test/**/*.ts"
+
+      - name: Linting
+        run: npx eslint "{src,apps,libs,test}/**/*.ts"
+
+      - name: Build
+        run: pnpm build
+
+      - name: Run Database Migrations (Push)
+        run: npx prisma db push --schema=src/modules/database/infrastructure/persistence/prisma/schema.prisma
+
+      - name: Run Unit Tests
+        run: pnpm test:unit
+
+      - name: Run E2E Tests
+        run: pnpm test:e2e
