@@ -92,8 +92,12 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
         .expect(400);
 
       const body = response.body as { message: string | string[] };
-      expect(JSON.stringify(body.message)).toContain(
-        'Username must contain only letters, numbers, dots and underscores',
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Username must contain only letters, numbers, dots and underscores',
+          ),
+        ]),
       );
     });
 
@@ -110,8 +114,12 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
         .expect(400);
 
       const body = response.body as { message: string | string[] };
-      expect(JSON.stringify(body.message)).toContain(
-        'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+          ),
+        ]),
       );
     });
 
@@ -123,8 +131,12 @@ export const signUpTest = (getApp: () => NestFastifyApplication) => {
         .expect(400);
 
       const body = response.body as { message: string | string[] };
-      expect(JSON.stringify(body.message)).toContain(
-        'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+      expect(body.message).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            'Password must contain at least one uppercase letter and one special character (@$!%*?&.)',
+          ),
+        ]),
       );
     });
 
