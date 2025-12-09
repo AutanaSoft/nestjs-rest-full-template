@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsDate, IsEnum } from 'class-validator';
 import { UserRole, UserStatus } from '../enums';
 
 /**
@@ -35,13 +34,11 @@ export class UserEntity {
 
   /** Current status of the user (e.g., ACTIVE, INACTIVE) */
   @ApiProperty({ enum: UserStatus, example: UserStatus.ACTIVE, description: 'User status' })
-  @IsEnum(UserStatus)
   @Expose()
   status?: UserStatus;
 
   /** Role assigned to the user (e.g., USER, ADMIN) */
   @ApiProperty({ enum: UserRole, example: UserRole.USER, description: 'User role' })
-  @IsEnum(UserRole)
   @Expose()
   role?: UserRole;
 
@@ -51,28 +48,32 @@ export class UserEntity {
     description: 'Email verification timestamp',
     required: false,
   })
-  @IsDate()
   @Expose()
   emailVerifiedAt?: Date | null;
 
   /** Timestamp of creation */
   @ApiProperty({ example: '2023-01-01T00:00:00Z', description: 'Creation timestamp' })
-  @IsDate()
   @Expose()
   createdAt?: Date;
 
   /** Timestamp of last update */
   @ApiProperty({ example: '2023-01-01T00:00:00Z', description: 'Last update timestamp' })
-  @IsDate()
   @Expose()
   updatedAt?: Date;
 
-  constructor(partial: Partial<UserEntity>) {
+  /**
+   * Private constructor to enforce Factory methods usage.
+   *
+   * @param partial - Partial user data.
+   */
+  private constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
   }
 
   /**
-   * Factory method to create a new User instance.
+   * Factory method to create a new User instance (Business Logic).
+   *
+   * Use this method when creating a NEW user in the system.
    *
    * @param email - User's email.
    * @param userName - User's username.
@@ -87,5 +88,18 @@ export class UserEntity {
       // status, role, createdAt, updatedAt are left undefined
       // to be handled by Database defaults.
     });
+  }
+
+  /**
+   * Factory method to restore a User instance from persistence (Reconstitution).
+   *
+   * Use this method when hydrating an existing user from the database or other source.
+   * Trust the source data and do not apply creation business rules.
+   *
+   * @param data - The data to reconstitute the entity.
+   * @returns A fully hydrated UserEntity.
+   */
+  static restore(data: Partial<UserEntity>): UserEntity {
+    return new UserEntity(data);
   }
 }

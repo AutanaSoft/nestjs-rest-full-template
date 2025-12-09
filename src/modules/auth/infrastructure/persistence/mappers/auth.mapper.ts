@@ -19,7 +19,7 @@ export class AuthMapper {
    * @returns The corresponding UserEntity.
    */
   static toDomain(entity: UserDbEntity): UserEntity {
-    return new UserEntity({
+    return UserEntity.restore({
       id: entity.id,
       email: entity.email,
       userName: entity.userName,
