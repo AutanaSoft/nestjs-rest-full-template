@@ -1,0 +1,21 @@
+import { Injectable } from '@nestjs/common';
+import { HashingService } from '@shared/application/services';
+import * as bcrypt from 'bcrypt';
+
+/**
+ * Implementation of HashingService using bcrypt.
+ *
+ * @public
+ */
+@Injectable()
+export class BcryptHashingService implements HashingService {
+  private readonly saltRounds = 10;
+
+  async hash(data: string): Promise<string> {
+    return bcrypt.hash(data, this.saltRounds);
+  }
+
+  async compare(data: string, encrypted: string): Promise<boolean> {
+    return bcrypt.compare(data, encrypted);
+  }
+}

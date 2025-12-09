@@ -3,5 +3,6 @@ onlyBuiltDependencies:
   - '@prisma/engines'
   - '@scarf/scarf'
   - '@swc/core'
+  - bcrypt
   - prisma
   - unrs-resolver

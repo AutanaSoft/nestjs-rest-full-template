@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@modules/database/database.module';
+import { SharedModule } from '@shared/shared.module';
 
 import { AuthController } from './controllers/auth.controller';
 
@@ -15,7 +16,7 @@ import { AuthRepository } from '@modules/auth/domain/repositories';
 import { AuthRepositoryImpl } from '@modules/auth/infrastructure/persistence';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, SharedModule],
   controllers: [AuthController],
   providers: [
     // Use Cases
