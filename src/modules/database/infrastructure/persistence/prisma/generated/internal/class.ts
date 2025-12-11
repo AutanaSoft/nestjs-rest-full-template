@@ -11,7 +11,7 @@
  */
 
 import * as runtime from '@prisma/client/runtime/client';
-import type * as Prisma from './prismaNamespace';
+import type * as Prisma from './prismaNamespace.ts';
 
 const config: runtime.GetPrismaClientConfig = {
   previewFeatures: [],
@@ -19,7 +19,7 @@ const config: runtime.GetPrismaClientConfig = {
   engineVersion: 'ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba',
   activeProvider: 'postgresql',
   inlineSchema:
-    '/// Roles asignados a los usuarios\nenum UserRole {\n  SUPER_ADMIN\n  ADMIN\n  MANAGER\n  MODERATOR\n  SUPPORT\n  USER\n  GUEST\n}\n\n/// Estado de los usuarios en el sistema\nenum UserStatus {\n  REGISTERED\n  ACTIVE\n  SUSPENDED\n  BANNED\n}\n\nmodel UserDbEntity {\n  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  email           String     @db.VarChar(255)\n  emailHash       String     @unique @map("email_hash") @db.VarChar(64)\n  userName        String     @unique @map("user_name") @db.VarChar(20)\n  password        String     @db.VarChar(64)\n  status          UserStatus @default(REGISTERED)\n  role            UserRole   @default(USER)\n  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz()\n  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()\n\n  @@index([emailHash])\n  @@index([userName])\n  @@index([createdAt])\n  @@map("users")\n}\n\ngenerator client {\n  provider            = "prisma-client"\n  output              = "./generated"\n  moduleFormat        = "cjs"\n  importFileExtension = ""\n  binaryTargets       = ["native", "rhel-openssl-3.0.x"]\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
+    '// User roles\nenum UserRole {\n  SUPER_ADMIN\n  ADMIN\n  MANAGER\n  MODERATOR\n  SUPPORT\n  USER\n  GUEST\n}\n\n// User Status\nenum UserStatus {\n  REGISTERED\n  ACTIVE\n  SUSPENDED\n  BANNED\n}\n\nmodel UserDbEntity {\n  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  email           String     @db.VarChar(255)\n  emailHash       String     @unique @map("email_hash") @db.VarChar(64)\n  userName        String     @unique @map("user_name") @db.VarChar(20)\n  password        String     @db.VarChar(64)\n  status          UserStatus @default(REGISTERED)\n  role            UserRole   @default(USER)\n  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz()\n  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()\n\n  @@index([emailHash])\n  @@index([userName])\n  @@index([createdAt])\n  @@map("users")\n}\n\ngenerator client {\n  provider            = "prisma-client"\n  output              = "./generated"\n  moduleFormat        = "cjs"\n  importFileExtension = "ts"\n  binaryTargets       = ["native", "rhel-openssl-3.0.x"]\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
   runtimeDataModel: {
     models: {},
     enums: {},

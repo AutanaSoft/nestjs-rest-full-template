@@ -7,5 +7,5 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/UserDbEntity';
-export type * from './commonInputTypes';
+export type * from './models/UserDbEntity.ts';
+export type * from './commonInputTypes.ts';
