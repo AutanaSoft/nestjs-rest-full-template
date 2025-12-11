@@ -8,18 +8,6 @@
  * 🟢 You can import this file directly.
  */
 
-export const UserRole = {
-  SUPER_ADMIN: 'SUPER_ADMIN',
-  ADMIN: 'ADMIN',
-  MANAGER: 'MANAGER',
-  MODERATOR: 'MODERATOR',
-  SUPPORT: 'SUPPORT',
-  USER: 'USER',
-  GUEST: 'GUEST',
-} as const;
-
-export type UserRole = (typeof UserRole)[keyof typeof UserRole];
-
 export const UserStatus = {
   REGISTERED: 'REGISTERED',
   ACTIVE: 'ACTIVE',

@@ -10,6 +10,7 @@ model PermissionsDbEntity {
 
   /// Relationships
   users UserPermissionDbEntity[]
+  roles RolePermissionDbEntity[]
 
   @@map("permissions")
 }

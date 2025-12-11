@@ -30,7 +30,6 @@ export type UserDbEntityMinAggregateOutputType = {
   userName: string | null;
   password: string | null;
   status: $Enums.UserStatus | null;
-  role: $Enums.UserRole | null;
   emailVerifiedAt: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -43,7 +42,6 @@ export type UserDbEntityMaxAggregateOutputType = {
   userName: string | null;
   password: string | null;
   status: $Enums.UserStatus | null;
-  role: $Enums.UserRole | null;
   emailVerifiedAt: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -56,7 +54,6 @@ export type UserDbEntityCountAggregateOutputType = {
   userName: number;
   password: number;
   status: number;
-  role: number;
   emailVerifiedAt: number;
   createdAt: number;
   updatedAt: number;
@@ -70,7 +67,6 @@ export type UserDbEntityMinAggregateInputType = {
   userName?: true;
   password?: true;
   status?: true;
-  role?: true;
   emailVerifiedAt?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -83,7 +79,6 @@ export type UserDbEntityMaxAggregateInputType = {
   userName?: true;
   password?: true;
   status?: true;
-  role?: true;
   emailVerifiedAt?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -96,7 +91,6 @@ export type UserDbEntityCountAggregateInputType = {
   userName?: true;
   password?: true;
   status?: true;
-  role?: true;
   emailVerifiedAt?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -187,7 +181,6 @@ export type UserDbEntityGroupByOutputType = {
   userName: string;
   password: string;
   status: $Enums.UserStatus;
-  role: $Enums.UserRole;
   emailVerifiedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -218,10 +211,12 @@ export type UserDbEntityWhereInput = {
   userName?: Prisma.StringFilter<'UserDbEntity'> | string;
   password?: Prisma.StringFilter<'UserDbEntity'> | string;
   status?: Prisma.EnumUserStatusFilter<'UserDbEntity'> | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleFilter<'UserDbEntity'> | $Enums.UserRole;
   emailVerifiedAt?: Prisma.DateTimeNullableFilter<'UserDbEntity'> | Date | string | null;
   createdAt?: Prisma.DateTimeFilter<'UserDbEntity'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'UserDbEntity'> | Date | string;
+  sessions?: Prisma.UserSessionDbEntityListRelationFilter;
+  permissions?: Prisma.UserPermissionDbEntityListRelationFilter;
+  roles?: Prisma.UserRoleDbEntityListRelationFilter;
 };
 
 export type UserDbEntityOrderByWithRelationInput = {
@@ -231,10 +226,12 @@ export type UserDbEntityOrderByWithRelationInput = {
   userName?: Prisma.SortOrder;
   password?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
-  role?: Prisma.SortOrder;
   emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  sessions?: Prisma.UserSessionDbEntityOrderByRelationAggregateInput;
+  permissions?: Prisma.UserPermissionDbEntityOrderByRelationAggregateInput;
+  roles?: Prisma.UserRoleDbEntityOrderByRelationAggregateInput;
 };
 
 export type UserDbEntityWhereUniqueInput = Prisma.AtLeast<
@@ -248,10 +245,12 @@ export type UserDbEntityWhereUniqueInput = Prisma.AtLeast<
     email?: Prisma.StringFilter<'UserDbEntity'> | string;
     password?: Prisma.StringFilter<'UserDbEntity'> | string;
     status?: Prisma.EnumUserStatusFilter<'UserDbEntity'> | $Enums.UserStatus;
-    role?: Prisma.EnumUserRoleFilter<'UserDbEntity'> | $Enums.UserRole;
     emailVerifiedAt?: Prisma.DateTimeNullableFilter<'UserDbEntity'> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<'UserDbEntity'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'UserDbEntity'> | Date | string;
+    sessions?: Prisma.UserSessionDbEntityListRelationFilter;
+    permissions?: Prisma.UserPermissionDbEntityListRelationFilter;
+    roles?: Prisma.UserRoleDbEntityListRelationFilter;
   },
   'id' | 'emailHash' | 'userName'
 >;
@@ -263,7 +262,6 @@ export type UserDbEntityOrderByWithAggregationInput = {
   userName?: Prisma.SortOrder;
   password?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
-  role?: Prisma.SortOrder;
   emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -286,7 +284,6 @@ export type UserDbEntityScalarWhereWithAggregatesInput = {
   userName?: Prisma.StringWithAggregatesFilter<'UserDbEntity'> | string;
   password?: Prisma.StringWithAggregatesFilter<'UserDbEntity'> | string;
   status?: Prisma.EnumUserStatusWithAggregatesFilter<'UserDbEntity'> | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleWithAggregatesFilter<'UserDbEntity'> | $Enums.UserRole;
   emailVerifiedAt?:
     | Prisma.DateTimeNullableWithAggregatesFilter<'UserDbEntity'>
     | Date
@@ -303,10 +300,12 @@ export type UserDbEntityCreateInput = {
   userName: string;
   password: string;
   status?: $Enums.UserStatus;
-  role?: $Enums.UserRole;
   emailVerifiedAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityCreateNestedManyWithoutUserInput;
+  permissions?: Prisma.UserPermissionDbEntityCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityCreateNestedManyWithoutUserInput;
 };
 
 export type UserDbEntityUncheckedCreateInput = {
@@ -316,10 +315,12 @@ export type UserDbEntityUncheckedCreateInput = {
   userName: string;
   password: string;
   status?: $Enums.UserStatus;
-  role?: $Enums.UserRole;
   emailVerifiedAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserDbEntityUpdateInput = {
@@ -329,10 +330,12 @@ export type UserDbEntityUpdateInput = {
   userName?: Prisma.StringFieldUpdateOperationsInput | string;
   password?: Prisma.StringFieldUpdateOperationsInput | string;
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUpdateManyWithoutUserNestedInput;
+  permissions?: Prisma.UserPermissionDbEntityUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUpdateManyWithoutUserNestedInput;
 };
 
 export type UserDbEntityUncheckedUpdateInput = {
@@ -342,10 +345,12 @@ export type UserDbEntityUncheckedUpdateInput = {
   userName?: Prisma.StringFieldUpdateOperationsInput | string;
   password?: Prisma.StringFieldUpdateOperationsInput | string;
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserDbEntityCreateManyInput = {
@@ -355,7 +360,6 @@ export type UserDbEntityCreateManyInput = {
   userName: string;
   password: string;
   status?: $Enums.UserStatus;
-  role?: $Enums.UserRole;
   emailVerifiedAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -368,7 +372,6 @@ export type UserDbEntityUpdateManyMutationInput = {
   userName?: Prisma.StringFieldUpdateOperationsInput | string;
   password?: Prisma.StringFieldUpdateOperationsInput | string;
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -381,10 +384,14 @@ export type UserDbEntityUncheckedUpdateManyInput = {
   userName?: Prisma.StringFieldUpdateOperationsInput | string;
   password?: Prisma.StringFieldUpdateOperationsInput | string;
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type UserDbEntityScalarRelationFilter = {
+  is?: Prisma.UserDbEntityWhereInput;
+  isNot?: Prisma.UserDbEntityWhereInput;
 };
 
 export type UserDbEntityCountOrderByAggregateInput = {
@@ -394,7 +401,6 @@ export type UserDbEntityCountOrderByAggregateInput = {
   userName?: Prisma.SortOrder;
   password?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
-  role?: Prisma.SortOrder;
   emailVerifiedAt?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -407,7 +413,6 @@ export type UserDbEntityMaxOrderByAggregateInput = {
   userName?: Prisma.SortOrder;
   password?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
-  role?: Prisma.SortOrder;
   emailVerifiedAt?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -420,30 +425,400 @@ export type UserDbEntityMinOrderByAggregateInput = {
   userName?: Prisma.SortOrder;
   password?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
-  role?: Prisma.SortOrder;
   emailVerifiedAt?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string;
+export type UserDbEntityCreateNestedOneWithoutPermissionsInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutPermissionsInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutPermissionsInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+};
+
+export type UserDbEntityUpdateOneRequiredWithoutPermissionsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutPermissionsInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutPermissionsInput;
+  upsert?: Prisma.UserDbEntityUpsertWithoutPermissionsInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserDbEntityUpdateToOneWithWhereWithoutPermissionsInput,
+      Prisma.UserDbEntityUpdateWithoutPermissionsInput
+    >,
+    Prisma.UserDbEntityUncheckedUpdateWithoutPermissionsInput
+  >;
+};
+
+export type UserDbEntityCreateNestedOneWithoutRolesInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutRolesInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutRolesInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+};
+
+export type UserDbEntityUpdateOneRequiredWithoutRolesNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutRolesInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutRolesInput;
+  upsert?: Prisma.UserDbEntityUpsertWithoutRolesInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserDbEntityUpdateToOneWithWhereWithoutRolesInput,
+      Prisma.UserDbEntityUpdateWithoutRolesInput
+    >,
+    Prisma.UserDbEntityUncheckedUpdateWithoutRolesInput
+  >;
+};
+
+export type UserDbEntityCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutSessionsInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutSessionsInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+};
+
+export type UserDbEntityUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutSessionsInput
+  >;
+  connectOrCreate?: Prisma.UserDbEntityCreateOrConnectWithoutSessionsInput;
+  upsert?: Prisma.UserDbEntityUpsertWithoutSessionsInput;
+  connect?: Prisma.UserDbEntityWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserDbEntityUpdateToOneWithWhereWithoutSessionsInput,
+      Prisma.UserDbEntityUpdateWithoutSessionsInput
+    >,
+    Prisma.UserDbEntityUncheckedUpdateWithoutSessionsInput
+  >;
 };
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus;
 };
 
-export type EnumUserRoleFieldUpdateOperationsInput = {
-  set?: $Enums.UserRole;
+export type UserDbEntityCreateWithoutPermissionsInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityCreateNestedManyWithoutUserInput;
 };
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null;
+export type UserDbEntityUncheckedCreateWithoutPermissionsInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedCreateNestedManyWithoutUserInput;
 };
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string;
+export type UserDbEntityCreateOrConnectWithoutPermissionsInput = {
+  where: Prisma.UserDbEntityWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutPermissionsInput
+  >;
+};
+
+export type UserDbEntityUpsertWithoutPermissionsInput = {
+  update: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutPermissionsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutPermissionsInput
+  >;
+  where?: Prisma.UserDbEntityWhereInput;
+};
+
+export type UserDbEntityUpdateToOneWithWhereWithoutPermissionsInput = {
+  where?: Prisma.UserDbEntityWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutPermissionsInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutPermissionsInput
+  >;
+};
+
+export type UserDbEntityUpdateWithoutPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUpdateManyWithoutUserNestedInput;
+};
+
+export type UserDbEntityUncheckedUpdateWithoutPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+export type UserDbEntityCreateWithoutRolesInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityCreateNestedManyWithoutUserInput;
+  permissions?: Prisma.UserPermissionDbEntityCreateNestedManyWithoutUserInput;
+};
+
+export type UserDbEntityUncheckedCreateWithoutRolesInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserDbEntityCreateOrConnectWithoutRolesInput = {
+  where: Prisma.UserDbEntityWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutRolesInput
+  >;
+};
+
+export type UserDbEntityUpsertWithoutRolesInput = {
+  update: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutRolesInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutRolesInput
+  >;
+  where?: Prisma.UserDbEntityWhereInput;
+};
+
+export type UserDbEntityUpdateToOneWithWhereWithoutRolesInput = {
+  where?: Prisma.UserDbEntityWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutRolesInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutRolesInput
+  >;
+};
+
+export type UserDbEntityUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUpdateManyWithoutUserNestedInput;
+  permissions?: Prisma.UserPermissionDbEntityUpdateManyWithoutUserNestedInput;
+};
+
+export type UserDbEntityUncheckedUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  sessions?: Prisma.UserSessionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+export type UserDbEntityCreateWithoutSessionsInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  permissions?: Prisma.UserPermissionDbEntityCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityCreateNestedManyWithoutUserInput;
+};
+
+export type UserDbEntityUncheckedCreateWithoutSessionsInput = {
+  id?: string;
+  email: string;
+  emailHash: string;
+  userName: string;
+  password: string;
+  status?: $Enums.UserStatus;
+  emailVerifiedAt?: Date | string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedCreateNestedManyWithoutUserInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserDbEntityCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserDbEntityWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutSessionsInput
+  >;
+};
+
+export type UserDbEntityUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutSessionsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserDbEntityCreateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedCreateWithoutSessionsInput
+  >;
+  where?: Prisma.UserDbEntityWhereInput;
+};
+
+export type UserDbEntityUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserDbEntityWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserDbEntityUpdateWithoutSessionsInput,
+    Prisma.UserDbEntityUncheckedUpdateWithoutSessionsInput
+  >;
+};
+
+export type UserDbEntityUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  permissions?: Prisma.UserPermissionDbEntityUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUpdateManyWithoutUserNestedInput;
+};
+
+export type UserDbEntityUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  emailHash?: Prisma.StringFieldUpdateOperationsInput | string;
+  userName?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  permissions?: Prisma.UserPermissionDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+  roles?: Prisma.UserRoleDbEntityUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+/**
+ * Count Type UserDbEntityCountOutputType
+ */
+
+export type UserDbEntityCountOutputType = {
+  sessions: number;
+  permissions: number;
+  roles: number;
+};
+
+export type UserDbEntityCountOutputTypeSelect<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  sessions?: boolean | UserDbEntityCountOutputTypeCountSessionsArgs;
+  permissions?: boolean | UserDbEntityCountOutputTypeCountPermissionsArgs;
+  roles?: boolean | UserDbEntityCountOutputTypeCountRolesArgs;
+};
+
+/**
+ * UserDbEntityCountOutputType without action
+ */
+export type UserDbEntityCountOutputTypeDefaultArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserDbEntityCountOutputType
+   */
+  select?: Prisma.UserDbEntityCountOutputTypeSelect<ExtArgs> | null;
+};
+
+/**
+ * UserDbEntityCountOutputType without action
+ */
+export type UserDbEntityCountOutputTypeCountSessionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.UserSessionDbEntityWhereInput;
+};
+
+/**
+ * UserDbEntityCountOutputType without action
+ */
+export type UserDbEntityCountOutputTypeCountPermissionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.UserPermissionDbEntityWhereInput;
+};
+
+/**
+ * UserDbEntityCountOutputType without action
+ */
+export type UserDbEntityCountOutputTypeCountRolesArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.UserRoleDbEntityWhereInput;
 };
 
 export type UserDbEntitySelect<
@@ -456,10 +831,13 @@ export type UserDbEntitySelect<
     userName?: boolean;
     password?: boolean;
     status?: boolean;
-    role?: boolean;
     emailVerifiedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    sessions?: boolean | Prisma.UserDbEntity$sessionsArgs<ExtArgs>;
+    permissions?: boolean | Prisma.UserDbEntity$permissionsArgs<ExtArgs>;
+    roles?: boolean | Prisma.UserDbEntity$rolesArgs<ExtArgs>;
+    _count?: boolean | Prisma.UserDbEntityCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['userDbEntity']
 >;
@@ -474,7 +852,6 @@ export type UserDbEntitySelectCreateManyAndReturn<
     userName?: boolean;
     password?: boolean;
     status?: boolean;
-    role?: boolean;
     emailVerifiedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -492,7 +869,6 @@ export type UserDbEntitySelectUpdateManyAndReturn<
     userName?: boolean;
     password?: boolean;
     status?: boolean;
-    role?: boolean;
     emailVerifiedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -507,7 +883,6 @@ export type UserDbEntitySelectScalar = {
   userName?: boolean;
   password?: boolean;
   status?: boolean;
-  role?: boolean;
   emailVerifiedAt?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
@@ -522,18 +897,38 @@ export type UserDbEntityOmit<
   | 'userName'
   | 'password'
   | 'status'
-  | 'role'
   | 'emailVerifiedAt'
   | 'createdAt'
   | 'updatedAt',
   ExtArgs['result']['userDbEntity']
 >;
+export type UserDbEntityInclude<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  sessions?: boolean | Prisma.UserDbEntity$sessionsArgs<ExtArgs>;
+  permissions?: boolean | Prisma.UserDbEntity$permissionsArgs<ExtArgs>;
+  roles?: boolean | Prisma.UserDbEntity$rolesArgs<ExtArgs>;
+  _count?: boolean | Prisma.UserDbEntityCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type UserDbEntityIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {};
+export type UserDbEntityIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {};
 
 export type $UserDbEntityPayload<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   name: 'UserDbEntity';
-  objects: {};
+  objects: {
+    /**
+     * Relaciones
+     */
+    sessions: Prisma.$UserSessionDbEntityPayload<ExtArgs>[];
+    permissions: Prisma.$UserPermissionDbEntityPayload<ExtArgs>[];
+    roles: Prisma.$UserRoleDbEntityPayload<ExtArgs>[];
+  };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       id: string;
@@ -542,7 +937,6 @@ export type $UserDbEntityPayload<
       userName: string;
       password: string;
       status: $Enums.UserStatus;
-      role: $Enums.UserRole;
       emailVerifiedAt: Date | null;
       createdAt: Date;
       updatedAt: Date;
@@ -1084,6 +1478,39 @@ export interface Prisma__UserDbEntityClient<
   GlobalOmitOptions = {},
 > extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: 'PrismaPromise';
+  sessions<T extends Prisma.UserDbEntity$sessionsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.UserDbEntity$sessionsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$UserSessionDbEntityPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  permissions<T extends Prisma.UserDbEntity$permissionsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.UserDbEntity$permissionsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$UserPermissionDbEntityPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  roles<T extends Prisma.UserDbEntity$rolesArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.UserDbEntity$rolesArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$UserRoleDbEntityPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1121,7 +1548,6 @@ export interface UserDbEntityFieldRefs {
   readonly userName: Prisma.FieldRef<'UserDbEntity', 'String'>;
   readonly password: Prisma.FieldRef<'UserDbEntity', 'String'>;
   readonly status: Prisma.FieldRef<'UserDbEntity', 'UserStatus'>;
-  readonly role: Prisma.FieldRef<'UserDbEntity', 'UserRole'>;
   readonly emailVerifiedAt: Prisma.FieldRef<'UserDbEntity', 'DateTime'>;
   readonly createdAt: Prisma.FieldRef<'UserDbEntity', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'UserDbEntity', 'DateTime'>;
@@ -1143,6 +1569,10 @@ export type UserDbEntityFindUniqueArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * Filter, which UserDbEntity to fetch.
    */
   where: Prisma.UserDbEntityWhereUniqueInput;
@@ -1163,6 +1593,10 @@ export type UserDbEntityFindUniqueOrThrowArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * Filter, which UserDbEntity to fetch.
    */
   where: Prisma.UserDbEntityWhereUniqueInput;
@@ -1182,6 +1616,10 @@ export type UserDbEntityFindFirstArgs<
    * Omit specific fields from the UserDbEntity
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
   /**
    * Filter, which UserDbEntity to fetch.
    */
@@ -1235,6 +1673,10 @@ export type UserDbEntityFindFirstOrThrowArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * Filter, which UserDbEntity to fetch.
    */
   where?: Prisma.UserDbEntityWhereInput;
@@ -1287,6 +1729,10 @@ export type UserDbEntityFindManyArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * Filter, which UserDbEntities to fetch.
    */
   where?: Prisma.UserDbEntityWhereInput;
@@ -1333,6 +1779,10 @@ export type UserDbEntityCreateArgs<
    * Omit specific fields from the UserDbEntity
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
   /**
    * The data needed to create a UserDbEntity.
    */
@@ -1387,6 +1837,10 @@ export type UserDbEntityUpdateArgs<
    * Omit specific fields from the UserDbEntity
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
   /**
    * The data needed to update a UserDbEntity.
    */
@@ -1466,6 +1920,10 @@ export type UserDbEntityUpsertArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * The filter to search for the UserDbEntity to update in case it exists.
    */
   where: Prisma.UserDbEntityWhereUniqueInput;
@@ -1494,6 +1952,10 @@ export type UserDbEntityDeleteArgs<
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
+  /**
    * Filter which UserDbEntity to delete.
    */
   where: Prisma.UserDbEntityWhereUniqueInput;
@@ -1516,6 +1978,94 @@ export type UserDbEntityDeleteManyArgs<
 };
 
 /**
+ * UserDbEntity.sessions
+ */
+export type UserDbEntity$sessionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserSessionDbEntity
+   */
+  select?: Prisma.UserSessionDbEntitySelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the UserSessionDbEntity
+   */
+  omit?: Prisma.UserSessionDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSessionDbEntityInclude<ExtArgs> | null;
+  where?: Prisma.UserSessionDbEntityWhereInput;
+  orderBy?:
+    | Prisma.UserSessionDbEntityOrderByWithRelationInput
+    | Prisma.UserSessionDbEntityOrderByWithRelationInput[];
+  cursor?: Prisma.UserSessionDbEntityWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.UserSessionDbEntityScalarFieldEnum
+    | Prisma.UserSessionDbEntityScalarFieldEnum[];
+};
+
+/**
+ * UserDbEntity.permissions
+ */
+export type UserDbEntity$permissionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserPermissionDbEntity
+   */
+  select?: Prisma.UserPermissionDbEntitySelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the UserPermissionDbEntity
+   */
+  omit?: Prisma.UserPermissionDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPermissionDbEntityInclude<ExtArgs> | null;
+  where?: Prisma.UserPermissionDbEntityWhereInput;
+  orderBy?:
+    | Prisma.UserPermissionDbEntityOrderByWithRelationInput
+    | Prisma.UserPermissionDbEntityOrderByWithRelationInput[];
+  cursor?: Prisma.UserPermissionDbEntityWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.UserPermissionDbEntityScalarFieldEnum
+    | Prisma.UserPermissionDbEntityScalarFieldEnum[];
+};
+
+/**
+ * UserDbEntity.roles
+ */
+export type UserDbEntity$rolesArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserRoleDbEntity
+   */
+  select?: Prisma.UserRoleDbEntitySelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the UserRoleDbEntity
+   */
+  omit?: Prisma.UserRoleDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRoleDbEntityInclude<ExtArgs> | null;
+  where?: Prisma.UserRoleDbEntityWhereInput;
+  orderBy?:
+    | Prisma.UserRoleDbEntityOrderByWithRelationInput
+    | Prisma.UserRoleDbEntityOrderByWithRelationInput[];
+  cursor?: Prisma.UserRoleDbEntityWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.UserRoleDbEntityScalarFieldEnum | Prisma.UserRoleDbEntityScalarFieldEnum[];
+};
+
+/**
  * UserDbEntity without action
  */
 export type UserDbEntityDefaultArgs<
@@ -1529,4 +2079,8 @@ export type UserDbEntityDefaultArgs<
    * Omit specific fields from the UserDbEntity
    */
   omit?: Prisma.UserDbEntityOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDbEntityInclude<ExtArgs> | null;
 };

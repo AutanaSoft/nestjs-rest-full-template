@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { UserRole, UserStatus } from '../enums';
+import { UserStatus } from '../enums';
+import { RoleEntity } from './role.entity';
 
 export class UserEntity {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'User ID' })
@@ -30,9 +31,9 @@ export class UserEntity {
   @Expose()
   status: UserStatus = UserStatus.REGISTERED;
 
-  @ApiProperty({ enum: UserRole, example: UserRole.USER, description: 'User role' })
+  @ApiProperty({ type: () => [RoleEntity], description: 'User roles' })
   @Expose()
-  role: UserRole = UserRole.USER;
+  roles: RoleEntity[] = [];
 
   /** Timestamp of email verification */
   @ApiProperty({

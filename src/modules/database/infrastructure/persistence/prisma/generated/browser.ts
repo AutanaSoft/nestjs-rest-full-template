@@ -17,6 +17,37 @@ export { Prisma };
 export * as $Enums from './enums.ts';
 export * from './enums.ts';
 /**
+ * Model PermissionsDbEntity
+ * System permissions in resource:action format
+ * Examples: user:read, user:write, user:update, user:delete, user:manage
+ */
+export type PermissionsDbEntity = Prisma.PermissionsDbEntityModel;
+/**
+ * Model UserPermissionDbEntity
+ * Intermediate table for many-to-many relationship between User and Permission
+ */
+export type UserPermissionDbEntity = Prisma.UserPermissionDbEntityModel;
+/**
+ * Model RoleDbEntity
+ * Roles for RBAC
+ */
+export type RoleDbEntity = Prisma.RoleDbEntityModel;
+/**
+ * Model RolePermissionDbEntity
+ * Pivot table: Roles <-> Permissions
+ */
+export type RolePermissionDbEntity = Prisma.RolePermissionDbEntityModel;
+/**
+ * Model UserRoleDbEntity
+ * Pivot table: Users <-> Roles
+ */
+export type UserRoleDbEntity = Prisma.UserRoleDbEntityModel;
+/**
+ * Model UserSessionDbEntity
+ *
+ */
+export type UserSessionDbEntity = Prisma.UserSessionDbEntityModel;
+/**
  * Model UserDbEntity
  *
  */

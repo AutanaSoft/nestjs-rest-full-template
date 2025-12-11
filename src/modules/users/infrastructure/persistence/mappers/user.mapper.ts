@@ -1,10 +1,16 @@
 import {
   UserDbEntity,
-  UserRole as PrismaUserRole,
   UserStatus as PrismaUserStatus,
-} from '@prisma/client';
+  UserRoleDbEntity,
+  RoleDbEntity,
+} from '@modules/database/infrastructure/persistence/prisma/generated/client';
 import { UserEntity } from '@modules/users/domain/entities';
-import { UserRole, UserStatus } from '@modules/users/domain/enums';
+import { UserStatus } from '@modules/users/domain/enums';
+import { RoleMapper } from './role.mapper';
+
+type UserWithRoles = UserDbEntity & {
+  roles?: (UserRoleDbEntity & { role: RoleDbEntity })[];
+};
 
 /**
  * Mapper for transforming between User Domain Entities and Database Entities.
@@ -18,18 +24,23 @@ export class UserMapper {
    * @param entity - The Prisma UserDbEntity.
    * @returns The corresponding UserEntity.
    */
-  static toDomain(entity: UserDbEntity): UserEntity {
-    return UserEntity.restore({
+  static toDomain(entity: UserWithRoles): UserEntity {
+    const domainUser = UserEntity.restore({
       id: entity.id,
       email: entity.email,
       userName: entity.userName,
       password: entity.password,
       status: UserStatus[entity.status as keyof typeof UserStatus],
-      role: UserRole[entity.role as keyof typeof UserRole],
       emailVerifiedAt: entity.emailVerifiedAt,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     });
+
+    if (entity.roles) {
+      domainUser.roles = entity.roles.map((userRole) => RoleMapper.toDomain(userRole.role));
+    }
+
+    return domainUser;
   }
 
   /**
@@ -45,7 +56,6 @@ export class UserMapper {
       userName: domain.userName,
       password: domain.password ?? '',
       status: domain.status as unknown as PrismaUserStatus,
-      role: domain.role as unknown as PrismaUserRole,
       emailVerifiedAt: domain.emailVerifiedAt ?? null,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,

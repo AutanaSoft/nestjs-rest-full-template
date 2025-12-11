@@ -48,6 +48,12 @@ export const JsonNull = runtime.JsonNull;
 export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
+  PermissionsDbEntity: 'PermissionsDbEntity',
+  UserPermissionDbEntity: 'UserPermissionDbEntity',
+  RoleDbEntity: 'RoleDbEntity',
+  RolePermissionDbEntity: 'RolePermissionDbEntity',
+  UserRoleDbEntity: 'UserRoleDbEntity',
+  UserSessionDbEntity: 'UserSessionDbEntity',
   UserDbEntity: 'UserDbEntity',
 } as const;
 
@@ -67,6 +73,74 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
+export const PermissionsDbEntityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type PermissionsDbEntityScalarFieldEnum =
+  (typeof PermissionsDbEntityScalarFieldEnum)[keyof typeof PermissionsDbEntityScalarFieldEnum];
+
+export const UserPermissionDbEntityScalarFieldEnum = {
+  userId: 'userId',
+  permissionId: 'permissionId',
+  grantedAt: 'grantedAt',
+} as const;
+
+export type UserPermissionDbEntityScalarFieldEnum =
+  (typeof UserPermissionDbEntityScalarFieldEnum)[keyof typeof UserPermissionDbEntityScalarFieldEnum];
+
+export const RoleDbEntityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type RoleDbEntityScalarFieldEnum =
+  (typeof RoleDbEntityScalarFieldEnum)[keyof typeof RoleDbEntityScalarFieldEnum];
+
+export const RolePermissionDbEntityScalarFieldEnum = {
+  roleId: 'roleId',
+  permissionId: 'permissionId',
+  grantedAt: 'grantedAt',
+} as const;
+
+export type RolePermissionDbEntityScalarFieldEnum =
+  (typeof RolePermissionDbEntityScalarFieldEnum)[keyof typeof RolePermissionDbEntityScalarFieldEnum];
+
+export const UserRoleDbEntityScalarFieldEnum = {
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt',
+} as const;
+
+export type UserRoleDbEntityScalarFieldEnum =
+  (typeof UserRoleDbEntityScalarFieldEnum)[keyof typeof UserRoleDbEntityScalarFieldEnum];
+
+export const UserSessionDbEntityScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  refreshToken: 'refreshToken',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  expiresAt: 'expiresAt',
+  lastUsedAt: 'lastUsedAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type UserSessionDbEntityScalarFieldEnum =
+  (typeof UserSessionDbEntityScalarFieldEnum)[keyof typeof UserSessionDbEntityScalarFieldEnum];
+
 export const UserDbEntityScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -74,7 +148,6 @@ export const UserDbEntityScalarFieldEnum = {
   userName: 'userName',
   password: 'password',
   status: 'status',
-  role: 'role',
   emailVerifiedAt: 'emailVerifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

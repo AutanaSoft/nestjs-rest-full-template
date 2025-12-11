@@ -375,6 +375,12 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 
 export const ModelName = {
+  PermissionsDbEntity: 'PermissionsDbEntity',
+  UserPermissionDbEntity: 'UserPermissionDbEntity',
+  RoleDbEntity: 'RoleDbEntity',
+  RolePermissionDbEntity: 'RolePermissionDbEntity',
+  UserRoleDbEntity: 'UserRoleDbEntity',
+  UserSessionDbEntity: 'UserSessionDbEntity',
   UserDbEntity: 'UserDbEntity',
 } as const;
 
@@ -395,10 +401,473 @@ export type TypeMap<
     omit: GlobalOmitOptions;
   };
   meta: {
-    modelProps: 'userDbEntity';
+    modelProps:
+      | 'permissionsDbEntity'
+      | 'userPermissionDbEntity'
+      | 'roleDbEntity'
+      | 'rolePermissionDbEntity'
+      | 'userRoleDbEntity'
+      | 'userSessionDbEntity'
+      | 'userDbEntity';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
+    PermissionsDbEntity: {
+      payload: Prisma.$PermissionsDbEntityPayload<ExtArgs>;
+      fields: Prisma.PermissionsDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.PermissionsDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.PermissionsDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.PermissionsDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.PermissionsDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.PermissionsDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.PermissionsDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.PermissionsDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.PermissionsDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.PermissionsDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.PermissionsDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.PermissionsDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.PermissionsDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.PermissionsDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.PermissionsDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionsDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.PermissionsDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePermissionsDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.PermissionsDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.PermissionsDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.PermissionsDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.PermissionsDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    UserPermissionDbEntity: {
+      payload: Prisma.$UserPermissionDbEntityPayload<ExtArgs>;
+      fields: Prisma.UserPermissionDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.UserPermissionDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.UserPermissionDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.UserPermissionDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.UserPermissionDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.UserPermissionDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.UserPermissionDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.UserPermissionDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.UserPermissionDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.UserPermissionDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.UserPermissionDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.UserPermissionDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.UserPermissionDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.UserPermissionDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.UserPermissionDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPermissionDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.UserPermissionDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserPermissionDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.UserPermissionDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.UserPermissionDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.UserPermissionDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.UserPermissionDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    RoleDbEntity: {
+      payload: Prisma.$RoleDbEntityPayload<ExtArgs>;
+      fields: Prisma.RoleDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.RoleDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.RoleDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.RoleDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.RoleDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.RoleDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.RoleDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.RoleDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.RoleDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.RoleDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.RoleDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.RoleDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.RoleDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.RoleDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.RoleDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.RoleDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRoleDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.RoleDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.RoleDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.RoleDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.RoleDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    RolePermissionDbEntity: {
+      payload: Prisma.$RolePermissionDbEntityPayload<ExtArgs>;
+      fields: Prisma.RolePermissionDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.RolePermissionDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.RolePermissionDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.RolePermissionDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.RolePermissionDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.RolePermissionDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.RolePermissionDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.RolePermissionDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.RolePermissionDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.RolePermissionDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.RolePermissionDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.RolePermissionDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.RolePermissionDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.RolePermissionDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.RolePermissionDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RolePermissionDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.RolePermissionDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRolePermissionDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.RolePermissionDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.RolePermissionDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.RolePermissionDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.RolePermissionDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    UserRoleDbEntity: {
+      payload: Prisma.$UserRoleDbEntityPayload<ExtArgs>;
+      fields: Prisma.UserRoleDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.UserRoleDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.UserRoleDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.UserRoleDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.UserRoleDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.UserRoleDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.UserRoleDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.UserRoleDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.UserRoleDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.UserRoleDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.UserRoleDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.UserRoleDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.UserRoleDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.UserRoleDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.UserRoleDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserRoleDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.UserRoleDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserRoleDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.UserRoleDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.UserRoleDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.UserRoleDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.UserRoleDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    UserSessionDbEntity: {
+      payload: Prisma.$UserSessionDbEntityPayload<ExtArgs>;
+      fields: Prisma.UserSessionDbEntityFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.UserSessionDbEntityFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.UserSessionDbEntityFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        findFirst: {
+          args: Prisma.UserSessionDbEntityFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.UserSessionDbEntityFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        findMany: {
+          args: Prisma.UserSessionDbEntityFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>[];
+        };
+        create: {
+          args: Prisma.UserSessionDbEntityCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        createMany: {
+          args: Prisma.UserSessionDbEntityCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.UserSessionDbEntityCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>[];
+        };
+        delete: {
+          args: Prisma.UserSessionDbEntityDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        update: {
+          args: Prisma.UserSessionDbEntityUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        deleteMany: {
+          args: Prisma.UserSessionDbEntityDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.UserSessionDbEntityUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.UserSessionDbEntityUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>[];
+        };
+        upsert: {
+          args: Prisma.UserSessionDbEntityUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSessionDbEntityPayload>;
+        };
+        aggregate: {
+          args: Prisma.UserSessionDbEntityAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserSessionDbEntity>;
+        };
+        groupBy: {
+          args: Prisma.UserSessionDbEntityGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.UserSessionDbEntityGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.UserSessionDbEntityCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.UserSessionDbEntityCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
     UserDbEntity: {
       payload: Prisma.$UserDbEntityPayload<ExtArgs>;
       fields: Prisma.UserDbEntityFieldRefs;
@@ -514,6 +983,74 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
+export const PermissionsDbEntityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type PermissionsDbEntityScalarFieldEnum =
+  (typeof PermissionsDbEntityScalarFieldEnum)[keyof typeof PermissionsDbEntityScalarFieldEnum];
+
+export const UserPermissionDbEntityScalarFieldEnum = {
+  userId: 'userId',
+  permissionId: 'permissionId',
+  grantedAt: 'grantedAt',
+} as const;
+
+export type UserPermissionDbEntityScalarFieldEnum =
+  (typeof UserPermissionDbEntityScalarFieldEnum)[keyof typeof UserPermissionDbEntityScalarFieldEnum];
+
+export const RoleDbEntityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type RoleDbEntityScalarFieldEnum =
+  (typeof RoleDbEntityScalarFieldEnum)[keyof typeof RoleDbEntityScalarFieldEnum];
+
+export const RolePermissionDbEntityScalarFieldEnum = {
+  roleId: 'roleId',
+  permissionId: 'permissionId',
+  grantedAt: 'grantedAt',
+} as const;
+
+export type RolePermissionDbEntityScalarFieldEnum =
+  (typeof RolePermissionDbEntityScalarFieldEnum)[keyof typeof RolePermissionDbEntityScalarFieldEnum];
+
+export const UserRoleDbEntityScalarFieldEnum = {
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt',
+} as const;
+
+export type UserRoleDbEntityScalarFieldEnum =
+  (typeof UserRoleDbEntityScalarFieldEnum)[keyof typeof UserRoleDbEntityScalarFieldEnum];
+
+export const UserSessionDbEntityScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  refreshToken: 'refreshToken',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  expiresAt: 'expiresAt',
+  lastUsedAt: 'lastUsedAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type UserSessionDbEntityScalarFieldEnum =
+  (typeof UserSessionDbEntityScalarFieldEnum)[keyof typeof UserSessionDbEntityScalarFieldEnum];
+
 export const UserDbEntityScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -521,7 +1058,6 @@ export const UserDbEntityScalarFieldEnum = {
   userName: 'userName',
   password: 'password',
   status: 'status',
-  role: 'role',
   emailVerifiedAt: 'emailVerifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -566,6 +1102,21 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 
 /**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
+
+/**
  * Reference to a field of type 'UserStatus'
  */
 export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
@@ -580,29 +1131,6 @@ export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'UserStatus[]'
 >;
-
-/**
- * Reference to a field of type 'UserRole'
- */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>;
-
-/**
- * Reference to a field of type 'UserRole[]'
- */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<
-  $PrismaModel,
-  'UserRole[]'
->;
-
-/**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 
 /**
  * Reference to a field of type 'Int'
@@ -717,6 +1245,12 @@ export type PrismaClientOptions = (
   comments?: runtime.SqlCommenterPlugin[];
 };
 export type GlobalOmitConfig = {
+  permissionsDbEntity?: Prisma.PermissionsDbEntityOmit;
+  userPermissionDbEntity?: Prisma.UserPermissionDbEntityOmit;
+  roleDbEntity?: Prisma.RoleDbEntityOmit;
+  rolePermissionDbEntity?: Prisma.RolePermissionDbEntityOmit;
+  userRoleDbEntity?: Prisma.UserRoleDbEntityOmit;
+  userSessionDbEntity?: Prisma.UserSessionDbEntityOmit;
   userDbEntity?: Prisma.UserDbEntityOmit;
 };
 

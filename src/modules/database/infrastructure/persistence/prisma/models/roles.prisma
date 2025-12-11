@@ -1,0 +1,44 @@
+/// Roles for RBAC
+model RoleDbEntity {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique @db.VarChar(50)
+  slug        String   @unique @db.VarChar(50)
+  description String?  @db.VarChar(255)
+  isDefault   Boolean  @default(false) @map("is_default")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  /// Relationships
+  users       UserRoleDbEntity[]
+  permissions RolePermissionDbEntity[]
+
+  @@map("roles")
+}
+
+/// Pivot table: Roles <-> Permissions
+model RolePermissionDbEntity {
+  roleId       String   @map("role_id") @db.Uuid
+  permissionId String   @map("permission_id") @db.Uuid
+  grantedAt    DateTime @default(now()) @map("granted_at") @db.Timestamptz()
+
+  /// Relationships
+  role       RoleDbEntity        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission PermissionsDbEntity @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+/// Pivot table: Users <-> Roles
+model UserRoleDbEntity {
+  userId     String   @map("user_id") @db.Uuid
+  roleId     String   @map("role_id") @db.Uuid
+  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz()
+
+  /// Relationships
+  user UserDbEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role RoleDbEntity @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}

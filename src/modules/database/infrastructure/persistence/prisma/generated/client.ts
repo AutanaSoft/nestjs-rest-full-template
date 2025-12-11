@@ -26,8 +26,8 @@ export * from './enums.ts';
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more UserDbEntities
- * const userDbEntities = await prisma.userDbEntity.findMany()
+ * // Fetch zero or more PermissionsDbEntities
+ * const permissionsDbEntities = await prisma.permissionsDbEntity.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,6 +40,37 @@ export type PrismaClient<
 > = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>;
 export { Prisma };
 
+/**
+ * Model PermissionsDbEntity
+ * System permissions in resource:action format
+ * Examples: user:read, user:write, user:update, user:delete, user:manage
+ */
+export type PermissionsDbEntity = Prisma.PermissionsDbEntityModel;
+/**
+ * Model UserPermissionDbEntity
+ * Intermediate table for many-to-many relationship between User and Permission
+ */
+export type UserPermissionDbEntity = Prisma.UserPermissionDbEntityModel;
+/**
+ * Model RoleDbEntity
+ * Roles for RBAC
+ */
+export type RoleDbEntity = Prisma.RoleDbEntityModel;
+/**
+ * Model RolePermissionDbEntity
+ * Pivot table: Roles <-> Permissions
+ */
+export type RolePermissionDbEntity = Prisma.RolePermissionDbEntityModel;
+/**
+ * Model UserRoleDbEntity
+ * Pivot table: Users <-> Roles
+ */
+export type UserRoleDbEntity = Prisma.UserRoleDbEntityModel;
+/**
+ * Model UserSessionDbEntity
+ *
+ */
+export type UserSessionDbEntity = Prisma.UserSessionDbEntityModel;
 /**
  * Model UserDbEntity
  *

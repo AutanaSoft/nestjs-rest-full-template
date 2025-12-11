@@ -16,23 +16,38 @@ export class UserPrismaRepository implements UserRepository {
     const encryptedEmail = this.cryptoService.encrypt(user.email);
     const emailHash = this.cryptoService.hash(user.email);
 
+    // Find default role (usually 'user')
+    // TODO: This should be cached or configured
+    const defaultRole = await this.prismaService.roleDbEntity.findUnique({
+      where: { slug: 'user' },
+    });
+
     const created = await this.prismaService.userDbEntity.create({
       data: {
         email: encryptedEmail,
         emailHash: emailHash,
         userName: user.userName,
         password: user.password!,
-        role: user.role,
         status: user.status,
         emailVerifiedAt: user.emailVerifiedAt,
+        roles: defaultRole
+          ? {
+              create: {
+                roleId: defaultRole.id,
+              },
+            }
+          : undefined,
+      },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
       },
     });
 
-    // We return the entity with the plain email because the Use Case expects it that way
-    // (Or we could decrypt it back, but we have it in 'user' arg).
-    // Better to map from DB result to be consistent.
     const domainUser = UserMapper.toDomain(created);
-    // Restore plain email because it is encrypted in DB
     domainUser.email = this.cryptoService.decrypt(created.email);
     return domainUser;
   }
@@ -42,6 +57,13 @@ export class UserPrismaRepository implements UserRepository {
 
     const user = await this.prismaService.userDbEntity.findFirst({
       where: { emailHash },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
     });
 
     if (!user) return null;
@@ -54,6 +76,13 @@ export class UserPrismaRepository implements UserRepository {
   async findById(id: string): Promise<UserEntity | null> {
     const user = await this.prismaService.userDbEntity.findUnique({
       where: { id },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
     });
 
     if (!user) return null;
@@ -66,6 +95,13 @@ export class UserPrismaRepository implements UserRepository {
   async findByUserName(userName: string): Promise<UserEntity | null> {
     const user = await this.prismaService.userDbEntity.findUnique({
       where: { userName },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
     });
     return user ? UserMapper.toDomain(user) : null;
   }
@@ -74,16 +110,21 @@ export class UserPrismaRepository implements UserRepository {
     const dataToUpdate = UserMapper.toPersistence(user);
 
     // Always encrypt and hash email on update to ensure consistency
-    // Optimization: In real app, check if email changed.
     if (user.email) {
       dataToUpdate.email = this.cryptoService.encrypt(user.email);
-      // We need to force cast to assign the missing property if mapped type doesn't have it
       (dataToUpdate as any).emailHash = this.cryptoService.hash(user.email);
     }
 
     const updated = await this.prismaService.userDbEntity.update({
       where: { id: user.id },
       data: dataToUpdate,
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
     });
 
     const domainUser = UserMapper.toDomain(updated);

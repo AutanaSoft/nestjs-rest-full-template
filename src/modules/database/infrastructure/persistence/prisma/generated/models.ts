@@ -7,5 +7,11 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/PermissionsDbEntity.ts';
+export type * from './models/UserPermissionDbEntity.ts';
+export type * from './models/RoleDbEntity.ts';
+export type * from './models/RolePermissionDbEntity.ts';
+export type * from './models/UserRoleDbEntity.ts';
+export type * from './models/UserSessionDbEntity.ts';
 export type * from './models/UserDbEntity.ts';
 export type * from './commonInputTypes.ts';

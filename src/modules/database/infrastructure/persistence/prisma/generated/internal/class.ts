@@ -19,7 +19,7 @@ const config: runtime.GetPrismaClientConfig = {
   engineVersion: 'ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba',
   activeProvider: 'postgresql',
   inlineSchema:
-    '// User roles\nenum UserRole {\n  SUPER_ADMIN\n  ADMIN\n  MANAGER\n  MODERATOR\n  SUPPORT\n  USER\n  GUEST\n}\n\n// User Status\nenum UserStatus {\n  REGISTERED\n  ACTIVE\n  SUSPENDED\n  BANNED\n}\n\nmodel UserDbEntity {\n  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  email           String     @db.VarChar(255)\n  emailHash       String     @unique @map("email_hash") @db.VarChar(64)\n  userName        String     @unique @map("user_name") @db.VarChar(20)\n  password        String     @db.VarChar(64)\n  status          UserStatus @default(REGISTERED)\n  role            UserRole   @default(USER)\n  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz()\n  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()\n\n  @@index([emailHash])\n  @@index([userName])\n  @@index([createdAt])\n  @@map("users")\n}\n\ngenerator client {\n  provider            = "prisma-client"\n  output              = "./generated"\n  moduleFormat        = "cjs"\n  importFileExtension = "ts"\n  binaryTargets       = ["native", "rhel-openssl-3.0.x"]\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
+    '/// System permissions in resource:action format\n/// Examples: user:read, user:write, user:update, user:delete, user:manage\nmodel PermissionsDbEntity {\n  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  name        String   @unique @db.VarChar(50)\n  slug        String   @unique @db.VarChar(50)\n  description String?  @db.VarChar(255)\n  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()\n\n  /// Relationships\n  users UserPermissionDbEntity[]\n  roles RolePermissionDbEntity[]\n\n  @@map("permissions")\n}\n\n/// Intermediate table for many-to-many relationship between User and Permission\nmodel UserPermissionDbEntity {\n  userId       String   @map("user_id") @db.Uuid\n  permissionId String   @map("permission_id") @db.Uuid\n  grantedAt    DateTime @default(now()) @map("granted_at") @db.Timestamptz()\n\n  /// Relationships\n  user       UserDbEntity        @relation(fields: [userId], references: [id], onDelete: Cascade)\n  permission PermissionsDbEntity @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([userId, permissionId])\n  @@index([userId])\n  @@index([permissionId])\n  @@map("user_permissions")\n}\n\n/// Roles for RBAC\nmodel RoleDbEntity {\n  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  name        String   @unique @db.VarChar(50)\n  slug        String   @unique @db.VarChar(50)\n  description String?  @db.VarChar(255)\n  isDefault   Boolean  @default(false) @map("is_default")\n  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()\n\n  /// Relationships\n  users       UserRoleDbEntity[]\n  permissions RolePermissionDbEntity[]\n\n  @@map("roles")\n}\n\n/// Pivot table: Roles <-> Permissions\nmodel RolePermissionDbEntity {\n  roleId       String   @map("role_id") @db.Uuid\n  permissionId String   @map("permission_id") @db.Uuid\n  grantedAt    DateTime @default(now()) @map("granted_at") @db.Timestamptz()\n\n  /// Relationships\n  role       RoleDbEntity        @relation(fields: [roleId], references: [id], onDelete: Cascade)\n  permission PermissionsDbEntity @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([roleId, permissionId])\n  @@map("role_permissions")\n}\n\n/// Pivot table: Users <-> Roles\nmodel UserRoleDbEntity {\n  userId     String   @map("user_id") @db.Uuid\n  roleId     String   @map("role_id") @db.Uuid\n  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz()\n\n  /// Relationships\n  user UserDbEntity @relation(fields: [userId], references: [id], onDelete: Cascade)\n  role RoleDbEntity @relation(fields: [roleId], references: [id], onDelete: Cascade)\n\n  @@id([userId, roleId])\n  @@map("user_roles")\n}\n\n// Session an Refresh Token for authentication\nmodel UserSessionDbEntity {\n  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  userId       String    @map("user_id") @db.Uuid\n  refreshToken String    @unique @map("refresh_token") @db.VarChar(255)\n  userAgent    String?   @map("user_agent") @db.VarChar(255)\n  ipAddress    String?   @map("ip_address") @db.VarChar(45)\n  expiresAt    DateTime  @map("expires_at") @db.Timestamptz()\n  lastUsedAt   DateTime? @map("last_used_at") @db.Timestamptz()\n  revokedAt    DateTime? @map("revoked_at") @db.Timestamptz()\n  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz()\n\n  /// Relaciones\n  user UserDbEntity @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([userId])\n  @@index([refreshToken])\n  @@index([expiresAt])\n  @@map("user_sessions")\n}\n\n// User Status\nenum UserStatus {\n  REGISTERED\n  ACTIVE\n  SUSPENDED\n  BANNED\n}\n\nmodel UserDbEntity {\n  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid\n  email           String     @db.VarChar(255)\n  emailHash       String     @unique @map("email_hash") @db.VarChar(64)\n  userName        String     @unique @map("user_name") @db.VarChar(20)\n  password        String     @db.VarChar(64)\n  status          UserStatus @default(REGISTERED)\n  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz()\n  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz()\n  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()\n\n  /// Relaciones\n  sessions    UserSessionDbEntity[]\n  permissions UserPermissionDbEntity[]\n  roles       UserRoleDbEntity[]\n\n  @@index([emailHash])\n  @@index([userName])\n  @@index([createdAt])\n  @@map("users")\n}\n\ngenerator client {\n  provider            = "prisma-client"\n  output              = "./generated"\n  moduleFormat        = "cjs"\n  importFileExtension = "ts"\n  binaryTargets       = ["native", "rhel-openssl-3.0.x"]\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
   runtimeDataModel: {
     models: {},
     enums: {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
 };
 
 config.runtimeDataModel = JSON.parse(
-  '{"models":{"UserDbEntity":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"email","kind":"scalar","type":"String"},{"name":"emailHash","kind":"scalar","type":"String","dbName":"email_hash"},{"name":"userName","kind":"scalar","type":"String","dbName":"user_name"},{"name":"password","kind":"scalar","type":"String"},{"name":"status","kind":"enum","type":"UserStatus"},{"name":"role","kind":"enum","type":"UserRole"},{"name":"emailVerifiedAt","kind":"scalar","type":"DateTime","dbName":"email_verified_at"},{"name":"createdAt","kind":"scalar","type":"DateTime","dbName":"created_at"},{"name":"updatedAt","kind":"scalar","type":"DateTime","dbName":"updated_at"}],"dbName":"users"}},"enums":{},"types":{}}',
+  '{"models":{"PermissionsDbEntity":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"name","kind":"scalar","type":"String"},{"name":"slug","kind":"scalar","type":"String"},{"name":"description","kind":"scalar","type":"String"},{"name":"createdAt","kind":"scalar","type":"DateTime","dbName":"created_at"},{"name":"updatedAt","kind":"scalar","type":"DateTime","dbName":"updated_at"},{"name":"users","kind":"object","type":"UserPermissionDbEntity","relationName":"PermissionsDbEntityToUserPermissionDbEntity"},{"name":"roles","kind":"object","type":"RolePermissionDbEntity","relationName":"PermissionsDbEntityToRolePermissionDbEntity"}],"dbName":"permissions"},"UserPermissionDbEntity":{"fields":[{"name":"userId","kind":"scalar","type":"String","dbName":"user_id"},{"name":"permissionId","kind":"scalar","type":"String","dbName":"permission_id"},{"name":"grantedAt","kind":"scalar","type":"DateTime","dbName":"granted_at"},{"name":"user","kind":"object","type":"UserDbEntity","relationName":"UserDbEntityToUserPermissionDbEntity"},{"name":"permission","kind":"object","type":"PermissionsDbEntity","relationName":"PermissionsDbEntityToUserPermissionDbEntity"}],"dbName":"user_permissions"},"RoleDbEntity":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"name","kind":"scalar","type":"String"},{"name":"slug","kind":"scalar","type":"String"},{"name":"description","kind":"scalar","type":"String"},{"name":"isDefault","kind":"scalar","type":"Boolean","dbName":"is_default"},{"name":"createdAt","kind":"scalar","type":"DateTime","dbName":"created_at"},{"name":"updatedAt","kind":"scalar","type":"DateTime","dbName":"updated_at"},{"name":"users","kind":"object","type":"UserRoleDbEntity","relationName":"RoleDbEntityToUserRoleDbEntity"},{"name":"permissions","kind":"object","type":"RolePermissionDbEntity","relationName":"RoleDbEntityToRolePermissionDbEntity"}],"dbName":"roles"},"RolePermissionDbEntity":{"fields":[{"name":"roleId","kind":"scalar","type":"String","dbName":"role_id"},{"name":"permissionId","kind":"scalar","type":"String","dbName":"permission_id"},{"name":"grantedAt","kind":"scalar","type":"DateTime","dbName":"granted_at"},{"name":"role","kind":"object","type":"RoleDbEntity","relationName":"RoleDbEntityToRolePermissionDbEntity"},{"name":"permission","kind":"object","type":"PermissionsDbEntity","relationName":"PermissionsDbEntityToRolePermissionDbEntity"}],"dbName":"role_permissions"},"UserRoleDbEntity":{"fields":[{"name":"userId","kind":"scalar","type":"String","dbName":"user_id"},{"name":"roleId","kind":"scalar","type":"String","dbName":"role_id"},{"name":"assignedAt","kind":"scalar","type":"DateTime","dbName":"assigned_at"},{"name":"user","kind":"object","type":"UserDbEntity","relationName":"UserDbEntityToUserRoleDbEntity"},{"name":"role","kind":"object","type":"RoleDbEntity","relationName":"RoleDbEntityToUserRoleDbEntity"}],"dbName":"user_roles"},"UserSessionDbEntity":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"userId","kind":"scalar","type":"String","dbName":"user_id"},{"name":"refreshToken","kind":"scalar","type":"String","dbName":"refresh_token"},{"name":"userAgent","kind":"scalar","type":"String","dbName":"user_agent"},{"name":"ipAddress","kind":"scalar","type":"String","dbName":"ip_address"},{"name":"expiresAt","kind":"scalar","type":"DateTime","dbName":"expires_at"},{"name":"lastUsedAt","kind":"scalar","type":"DateTime","dbName":"last_used_at"},{"name":"revokedAt","kind":"scalar","type":"DateTime","dbName":"revoked_at"},{"name":"createdAt","kind":"scalar","type":"DateTime","dbName":"created_at"},{"name":"updatedAt","kind":"scalar","type":"DateTime","dbName":"updated_at"},{"name":"user","kind":"object","type":"UserDbEntity","relationName":"UserDbEntityToUserSessionDbEntity"}],"dbName":"user_sessions"},"UserDbEntity":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"email","kind":"scalar","type":"String"},{"name":"emailHash","kind":"scalar","type":"String","dbName":"email_hash"},{"name":"userName","kind":"scalar","type":"String","dbName":"user_name"},{"name":"password","kind":"scalar","type":"String"},{"name":"status","kind":"enum","type":"UserStatus"},{"name":"emailVerifiedAt","kind":"scalar","type":"DateTime","dbName":"email_verified_at"},{"name":"createdAt","kind":"scalar","type":"DateTime","dbName":"created_at"},{"name":"updatedAt","kind":"scalar","type":"DateTime","dbName":"updated_at"},{"name":"sessions","kind":"object","type":"UserSessionDbEntity","relationName":"UserDbEntityToUserSessionDbEntity"},{"name":"permissions","kind":"object","type":"UserPermissionDbEntity","relationName":"UserDbEntityToUserPermissionDbEntity"},{"name":"roles","kind":"object","type":"UserRoleDbEntity","relationName":"UserDbEntityToUserRoleDbEntity"}],"dbName":"users"}},"enums":{},"types":{}}',
 );
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
@@ -62,8 +62,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more UserDbEntities
-   * const userDbEntities = await prisma.userDbEntity.findMany()
+   * // Fetch zero or more PermissionsDbEntities
+   * const permissionsDbEntities = await prisma.permissionsDbEntity.findMany()
    * ```
    *
    * Read more in our [docs](https://pris.ly/d/client).
@@ -88,8 +88,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more UserDbEntities
- * const userDbEntities = await prisma.userDbEntity.findMany()
+ * // Fetch zero or more PermissionsDbEntities
+ * const permissionsDbEntities = await prisma.permissionsDbEntity.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -208,6 +208,66 @@ export interface PrismaClient<
       }
     >
   >;
+
+  /**
+   * `prisma.permissionsDbEntity`: Exposes CRUD operations for the **PermissionsDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more PermissionsDbEntities
+   * const permissionsDbEntities = await prisma.permissionsDbEntity.findMany()
+   * ```
+   */
+  get permissionsDbEntity(): Prisma.PermissionsDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.userPermissionDbEntity`: Exposes CRUD operations for the **UserPermissionDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more UserPermissionDbEntities
+   * const userPermissionDbEntities = await prisma.userPermissionDbEntity.findMany()
+   * ```
+   */
+  get userPermissionDbEntity(): Prisma.UserPermissionDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.roleDbEntity`: Exposes CRUD operations for the **RoleDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more RoleDbEntities
+   * const roleDbEntities = await prisma.roleDbEntity.findMany()
+   * ```
+   */
+  get roleDbEntity(): Prisma.RoleDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.rolePermissionDbEntity`: Exposes CRUD operations for the **RolePermissionDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more RolePermissionDbEntities
+   * const rolePermissionDbEntities = await prisma.rolePermissionDbEntity.findMany()
+   * ```
+   */
+  get rolePermissionDbEntity(): Prisma.RolePermissionDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.userRoleDbEntity`: Exposes CRUD operations for the **UserRoleDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more UserRoleDbEntities
+   * const userRoleDbEntities = await prisma.userRoleDbEntity.findMany()
+   * ```
+   */
+  get userRoleDbEntity(): Prisma.UserRoleDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.userSessionDbEntity`: Exposes CRUD operations for the **UserSessionDbEntity** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more UserSessionDbEntities
+   * const userSessionDbEntities = await prisma.userSessionDbEntity.findMany()
+   * ```
+   */
+  get userSessionDbEntity(): Prisma.UserSessionDbEntityDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.userDbEntity`: Exposes CRUD operations for the **UserDbEntity** model.

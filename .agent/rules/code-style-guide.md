@@ -8,7 +8,7 @@ Your task is to generate code, fixes, and refactors that comply with fundamental
 
 ## Development Guidelines
 
-- Always consult the project instructions before generating or modifying code
+- Always consult the project rules before generating or modifying code
 - Ask for confirmation before implementing improvements or changes not explicitly specified
 - Be transparent about uncertainties and request clarifications when instructions are ambiguous
 - The project instructions are the authoritative source of truth for all development decisions
