@@ -30,7 +30,8 @@ model UserDbEntity {
   updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
 
   /// Relaciones
-  sessions Session[]
+  sessions    UserSessionDbEntity[]
+  permissions UserPermissionDbEntity[]
 
   @@index([emailHash])
   @@index([userName])

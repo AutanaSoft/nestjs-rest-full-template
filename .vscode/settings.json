@@ -15,6 +15,7 @@
     "rhel",
     "swcrc",
     "Timestamptz",
+    "uuid",
     "Uuid"
   ],
   "remote.autoForwardPortsFallback": 0

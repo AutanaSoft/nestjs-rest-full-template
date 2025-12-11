@@ -1,0 +1,31 @@
+/// System permissions in resource:action format
+/// Examples: user:read, user:write, user:update, user:delete, user:manage
+model PermissionsDbEntity {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique @db.VarChar(50)
+  slug        String   @unique @db.VarChar(50)
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  /// Relationships
+  users UserPermissionDbEntity[]
+
+  @@map("permissions")
+}
+
+/// Intermediate table for many-to-many relationship between User and Permission
+model UserPermissionDbEntity {
+  userId       String   @map("user_id") @db.Uuid
+  permissionId String   @map("permission_id") @db.Uuid
+  grantedAt    DateTime @default(now()) @map("granted_at") @db.Timestamptz()
+
+  /// Relationships
+  user       UserDbEntity        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission PermissionsDbEntity @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, permissionId])
+  @@index([userId])
+  @@index([permissionId])
+  @@map("user_permissions")
+}

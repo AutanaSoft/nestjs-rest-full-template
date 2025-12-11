@@ -1,5 +1,5 @@
 // Session an Refresh Token for authentication
-model Session {
+model UserSessionDbEntity {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId       String    @map("user_id") @db.Uuid
   refreshToken String    @unique @map("refresh_token") @db.VarChar(255)
@@ -17,5 +17,5 @@ model Session {
   @@index([userId])
   @@index([refreshToken])
   @@index([expiresAt])
-  @@map("sessions")
+  @@map("user_sessions")
 }
