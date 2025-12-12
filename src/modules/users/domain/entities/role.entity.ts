@@ -1,9 +1,12 @@
+import { PermissionEntity } from './permission.entity';
+
 export class RoleEntity {
   id?: string;
   name!: string;
   slug!: string;
   description?: string;
   isDefault = false;
+  permissions: PermissionEntity[] = [];
   createdAt?: Date;
   updatedAt?: Date;
 

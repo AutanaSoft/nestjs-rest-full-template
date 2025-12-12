@@ -12,6 +12,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './modules/health/health.module';
 
 import databaseConfig from '@config/database.config';
+import jwtConfig from './config/jwt.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { UsersModule } from './modules/users/users.module';
@@ -21,7 +22,15 @@ import { UsersModule } from './modules/users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [appConfig, corsConfig, loggerConfig, throttlerConfig, cryptoConfig, databaseConfig],
+      load: [
+        appConfig,
+        corsConfig,
+        loggerConfig,
+        throttlerConfig,
+        cryptoConfig,
+        databaseConfig,
+        jwtConfig,
+      ],
     }),
     LoggerModule.forRootAsync({
       imports: [ConfigModule.forFeature(loggerConfig)],

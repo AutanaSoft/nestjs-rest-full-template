@@ -1,9 +1,18 @@
 import { RoleDbEntity } from '@modules/database/infrastructure/persistence/prisma/generated/client';
 import { RoleEntity } from '@modules/users/domain/entities/role.entity';
+import { PermissionMapper } from './permission.mapper';
+import {
+  RolePermissionDbEntity,
+  PermissionsDbEntity,
+} from '@modules/database/infrastructure/persistence/prisma/generated/client';
+
+type RoleWithPermissions = RoleDbEntity & {
+  permissions?: (RolePermissionDbEntity & { permission: PermissionsDbEntity })[];
+};
 
 export class RoleMapper {
-  static toDomain(entity: RoleDbEntity): RoleEntity {
-    return RoleEntity.restore({
+  static toDomain(entity: RoleWithPermissions): RoleEntity {
+    const role = RoleEntity.restore({
       id: entity.id,
       name: entity.name,
       slug: entity.slug,
@@ -12,6 +21,12 @@ export class RoleMapper {
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     });
+
+    if (entity.permissions) {
+      role.permissions = entity.permissions.map((p) => PermissionMapper.toDomain(p.permission));
+    }
+
+    return role;
   }
 
   static toPersistence(domain: RoleEntity): RoleDbEntity {
